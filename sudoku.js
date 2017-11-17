@@ -26,7 +26,7 @@ class Sudoku {
       for (let j = 0; j < 9; j++) {
 
         if (this.block[i][j] === String(0)) {
-          for (let k = 0; k < 9; k++) {
+          for (let k = 1; k <= 9; k++) {
 
             if (!this.rowCheck(i, k) &&
              !this.columnCheck(i, j, k) &&
