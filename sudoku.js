@@ -38,6 +38,16 @@ class Sudoku {
     return this.angka;
   }
 
+  checkArea(input){
+    for (var i = 0; i < 3; i++) {
+      for (var j = 0; j < 3; j++) {
+        if(this.papan[i][j] == input){
+          this.angka = false;
+        }
+      }
+    }
+    return this.angka;
+  }
 
 }
 
@@ -54,5 +64,6 @@ var game = new Sudoku('105802000090076405200400819019007306762083090000061050007
 game.solve()
 console.log(game.board());
 // console.log(game.checkRow(0,7));
-console.log(game.checkCol(0,3));
+// console.log(game.checkCol(0,3));
+console.log(game.checkArea(2));
 // console.log(game.board().cekRow());
