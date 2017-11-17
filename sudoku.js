@@ -10,23 +10,24 @@ class Sudoku {
     for (var i = 0; i < this.board.length; i++) {
       for (var j = 0; j < this.board[i].length; j++) {
         if(this.board[i][j] == 0){
-          for(let x = 1;x < 9;x++){
+          for(let x = 1;x <= 9;x++){
             this.board[i][j] = x.toString()
-            // console.log(this.board[i][j])
-            this.checkBoard()
             if(!this.checkBoard()){
-              return this.board[i][j] = 0
+              this.board[i][j] = '0'
+
             }
             else{
-              return this.board[i][j] = x.toString()
+              break
             }
-          }
         }
-      }
-    }
-    console.log(this.board)
-  }
 
+      }
+
+    }
+
+  }
+  return this.board
+}
   checkRow(){
     for(let i = 0; i < this.area; i++){
       for(let j = 0;j < this.area;j++){
@@ -195,7 +196,9 @@ class Sudoku {
     }
 
     checkBoard(){
-      if(this.checkRow && this.checkColumn && this.checkArea){
+      // this.board[0].splice(1,1,'1')
+      // console.log(this.board)
+      if(this.checkRow() && this.checkColumn() && this.checkArea()){
         return true
       }
       else{
@@ -241,4 +244,8 @@ console.log(game.printBoard())
 // console.log(game.checkColumn())
 // console.log(game.checkArea())
 // console.log(game.checkBoard())
+
+console.log('============SOLVE==============')
+
+// console.log(game.printBoard())
 console.log(game.solve())
