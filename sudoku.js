@@ -49,11 +49,11 @@ class Sudoku {
       for (var j = 0; j <  3; j++) {
 
         if (this.arr[i + baris][j + kolom] === tebakanAngka){
-          return true
+          return false
         }
       }
     }
-    return false
+    return true
   }
   // Returns a string representing the current state of the board
   board() {
