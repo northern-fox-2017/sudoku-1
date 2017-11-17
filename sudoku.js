@@ -4,6 +4,7 @@ class Sudoku {
   constructor(board_string) {
     this.board_string = board_string;
     this.arr = [];
+
   }
 
   solve() {}
@@ -12,15 +13,24 @@ class Sudoku {
   board() {
     let counter = 0;
     for(let i=0; i<9; i++) {
-      // var baru = this.board_string.split('')
       this.arr.push([]);
       for(let j=0; j<9; j++) {
         this.arr[i].push(this.board_string[counter++])
       }
     }
-    // console.log(this.board_string[0]);
+    // console.log(this.arr);
     return this.arr
   }
+
+  checkHorizontal(baris, angka) {
+    for(let i=0; i<9; i++) {
+      if(this.arr[i][baris] == angka) {
+      return false
+      }
+    }
+    return true;
+  }
+
 
 }
 
@@ -36,3 +46,7 @@ var game = new Sudoku(board_string)
 // game.solve()
 
 console.log(game.board())
+console.log(game.checkHorizontal(6,5));
+console.log(game.checkHorizontal(3,5));
+
+// console.log(checker());
