@@ -58,9 +58,15 @@ class Sudoku {
   	}
   	return true;*/
   }
-  checkArea(angkaSolve, row, col){
-  	for (var i = row; i < row+3; i++) {
-  		for (var j = col; j < col+3; j++) {
+  checkArea(angkaSolve, col, row){
+  	while (col%3 != 0) {
+  		col--;
+  	}
+  	while (row % 3 != 0) {
+  		row--;
+  	}
+  	for (var i = col; i < col+3; i++) {
+  		for (var j = row; j < row+3; j++) {
   			if (angkaSolve == this.board[i][j]) {
   				return false
   			}
@@ -69,9 +75,34 @@ class Sudoku {
   	return true;
   }
 
-  /*solve() {
-
-  }*/
+  solve() {
+  	for (var j = 0; j < 9; j++) {
+  		for (var k = 0; k < 9; k++) {
+  			if (this.board[j][k] == 0) {
+  				
+  					var angkaSolve =Math.round(Math.random() * (6 - 1) + 1);
+  					if (this.checkRow(angkaSolve, j) && this.checkCol(angkaSolve, k) && this.checkArea(angkaSolve, j, k)) {
+  						this.board[j][k] = angkaSolve;
+  					}
+  				
+  			}  	
+  		}
+  	}
+  	//Cara looping number dari 1 ke 9
+  	/*for (var j = 0; j < 9; j++) {
+  		for (var k = 0; k < 9; k++) {
+  			if (this.board[j][k] == 0) {
+  				for (var i = 1; i <= 9; i++) {
+  					var angkaSolve = i;
+  					if (this.checkRow(angkaSolve, j) && this.checkCol(angkaSolve, k) && this.checkArea(angkaSolve, j, k)) {
+  						this.board[j][k] = angkaSolve;
+  					}
+  				}
+  			}  	
+  		}
+  	}*/
+  	return this.board;
+  }
 
   // Returns a string representing the current state of the board
   // board() {}
@@ -92,7 +123,8 @@ game.solve()
 
 console.log(game.board())*/
 var sudoku = new Sudoku('609300402700610080000476215863020790000145800310090600057208063201060574904000300');
-console.log(sudoku.printBoard());
+ console.log(sudoku.printBoard());
 // console.log(sudoku.checkRow(5, 2));
-console.log(sudoku.checkCol(6, 0));
+// console.log(sudoku.checkCol(6, 0));
 // console.log(sudoku.checkArea(1, 3, 0));
+console.log(sudoku.solve());
