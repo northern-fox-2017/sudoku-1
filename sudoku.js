@@ -9,13 +9,7 @@ class Sudoku {
   }
 
   generateBoard(){
-    //write string to array 9 times to the right
-    //create new line
-    //write another string to array 9 times
-    // do until  9 rows
-    // let newBoard = [];
     let arrString = this.boardString.split('');
-    //console.log(arrString);
     for (let i = 0 ; i < this.row ; i++ ){
       let arrRow = [];
       for (let j = 0 ; j < this.col ; j++){
@@ -27,7 +21,6 @@ class Sudoku {
   }
 
   isRowClear(row, number){
-    console.log(this.arrSudoku[row]);
     return(this.arrSudoku[row].indexOf(number) === -1);
   }
 
@@ -52,15 +45,47 @@ class Sudoku {
       }
     }
     return true;
+  }
 
+  isCellClear(row, col, number){
+    return (this.isRowClear(row, number) && this.isColClear(col, number) && this.isAreaClear(row, col, number));
   }
 
 
 
-  solve() {}
+  solve() {
 
-  // Returns a string representing the current state of the board
-  board() {
+    //SOLVE AREA 1
+    //cek titik kosong pertama
+    //mulai dari angka 1
+    //kalau oke taro 1, kalo ngga lanjut sampai 9, kalo ada yang ketemu taro
+    //lanjut ke titik kosong berikutnya,
+    //laklukan hal yang sama sama tadi
+    //ceritanya sampe titik terakhir.. tapi gagal,
+    //reset yang tadi
+    //ulangi tapi mulainya dari 2 
+    let beginRow = 0;
+    let beginCol = 0;
+    let checkNumArea = 1
+    let tempBoard = this.arrSudoku;
+    for (let i = beginRow ; i < beginRow+3 ; i++){
+      for (let j = beginCol ; j < beginCol+3 ; j++){
+        //masukin angka yang bisa dimasukin
+        let checkNumCell = 1;
+        if (this.arrSudoku[i][j] === 0){
+          let checkNumCell = 1;
+          do {
+            if (this.isCellClear(i,j,checkNumCell)){
+              this.arrSudoku[i][j] = checkNumCell; 
+            } 
+            checkNumCell++
+          } while ( !this.isCellClear(i,j,checkNumCell) && checkNumCell<9)
+        }
+      }
+    }
+  }
+
+  board() {  // Returns a string representing the current state of the board
     console.log('-------------------------')
     for (let i = 0; i < this.row ; i++){
       let rowText = ['|'];
@@ -80,6 +105,7 @@ class Sudoku {
   }
 }
 
+
 // The file has newlines at the end of each line,
 // so we call split to remove it (\n)
 var fs = require('fs')
@@ -90,7 +116,9 @@ var board_string = fs.readFileSync('set-01_sample.unsolved.txt')
 var game = new Sudoku(board_string)
 game.generateBoard();
 // Remember: this will just fill out what it can and not "guess"
-// game.solve()
 
-console.log(game.isAreaClear(8,7, 9))
 game.board();
+// game.solve()
+// game.board();
+
+//console.log(game.isColClear(1,0, 7))
