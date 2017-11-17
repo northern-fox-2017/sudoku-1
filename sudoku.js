@@ -30,7 +30,8 @@ class Sudoku {
      **/
 
     for (var j = 0; j < this.wholeBoard.length; j++) {
-      console.log(this.cekBaris(j, 8));
+      // console.log(this.cekBaris(j, 8));
+      console.log(this.cekKolom(j, 8));
       // console.log(this.wholeBoard);
       display += ('| ' + this.wholeBoard[j].join(' | ') + ' |\n');
     }
@@ -38,7 +39,12 @@ class Sudoku {
   }
 
   cekKolom(num, input) {
-    return false;
+    var tampungKolom = [];
+    for (var i = 0; i < this.wholeBoard.length; i++) {
+      console.log(this.wholeBoard[i][i]);
+    }
+    // console.log(tampungKolom);
+    // return false;
   }
 
   cekBaris(num, input) {
