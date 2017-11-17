@@ -52,12 +52,12 @@ class Sudoku {
     return true;
   }
 
-  checkArea3x3(baris, tebak) {
+  checkArea3x3(baris, angka) {
   let getKolom = Math.floor(baris[1] / 3) * 3;
   let getBaris = Math.floor(baris[0] / 3) * 3;
       for (let k = 0; k < 3; k++) {
         for (let l = 0; l < 3; l++){
-          if (this.arrBoard[getBaris+k][getKolom+l] == tebak) {
+          if (this.boards[getBaris+k][getKolom+l] == angka) {
             return true;
           }
         }
@@ -78,6 +78,7 @@ var game = new Sudoku(board_string)
 game.board();
 console.log(game.checkRow(2,3));
 console.log(game.checkKolom(1,3))
+// console.log(game.checkArea3x3(3,3))
 
 // Remember: this will just fill out what it can and not "guess"
 // game.solve()
