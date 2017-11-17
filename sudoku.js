@@ -2,7 +2,11 @@
 
 class Sudoku {
   constructor(board_string) {
+    debugger
     this.board_string = board_string;
+    this.numbers = '123456789';
+    this.boolean = true;
+    this.boardArr = []
   }
 
   solve() {
@@ -11,20 +15,39 @@ class Sudoku {
 
   // Returns a string representing the current state of the board
   board() {
-    let boardArr = [];
     let indexJ = 0;
 
     for (let i = 0; i < 9; i++) {
-      boardArr.push([]);
-
+      this.boardArr.push([]);
       for(let j = 0; j < 9 ; j++) {
-        boardArr[i].push(this.board_string[indexJ]);
+        this.boardArr[i].push(this.board_string[indexJ]);
         indexJ++;
       }
     }
-    console.log(indexJ);
-    return boardArr;
+    return this.boardArr;
   }
+
+  checkRow(row, input) {
+    for (let i = 0; i < 9; i++) {
+      if(this.boardArr[row][i] == input) {
+          this.boolean = false;
+
+      }
+    }
+
+    return this.boolean;
+  }
+
+  checkCol(col, input) {
+    for (let i = 0; i < 9; i++) {
+      if(this.boardArr[i][col] == input) {
+        this.boolean = false;
+      }
+    }
+
+    return this.boolean;
+  }
+
 }
 
 // The file has newlines at the end of each line,
@@ -40,3 +63,5 @@ var game = new Sudoku('105802000090076405200400819019007306762083090000061050007
 game.solve()
 
 console.log(game.board())
+// console.log(game.checkRow(1, 5));
+console.log(game.checkCol(1, 8));
