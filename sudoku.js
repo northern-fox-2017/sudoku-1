@@ -4,7 +4,6 @@ class Sudoku {
   constructor(board_string) {
     this.board_string = board_string;
     this.arr = [];
-
   }
 
   solve() {}
@@ -22,6 +21,7 @@ class Sudoku {
     return this.arr
   }
 
+
   checkHorizontal(baris, angka) {
     for(let i=0; i<9; i++) {
       if(this.arr[i][baris] == angka) {
@@ -31,6 +31,15 @@ class Sudoku {
     return true;
   }
 
+
+  checkVertical(kolom, angka) {
+    for(let i=0; i<9; i++) {
+      if(this.arr[i][kolom] == angka) {
+        return false;
+      }
+    }
+    return true;
+  }
 
 }
 
@@ -48,5 +57,8 @@ var game = new Sudoku(board_string)
 console.log(game.board())
 console.log(game.checkHorizontal(6,5));
 console.log(game.checkHorizontal(3,5));
+console.log(game.checkVertical(1,1));
+console.log(game.checkVertical(1,5));
+
 
 // console.log(checker());
