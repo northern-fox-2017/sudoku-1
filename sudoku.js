@@ -47,9 +47,11 @@ class Sudoku {
     return this.boolean;
   }
 
-  checkArea(input) {
-    for (let i = 0; i < 3; i++) {
-      for (let j = 0; j < 3; j++) {
+  checkArea(row, col, input) {
+    row = Math.floor(row / 3) * 3
+    col = Math.floor(col / 3) * 3
+    for (let i = row; i < (row + 3); i++) {
+      for (let j = col; j < (col + 3); j++) {
         if(this.boardArr[i][j] == input) {
           this.boolean = false;
         }
@@ -74,4 +76,4 @@ game.solve()
 console.log(game.board())
 // console.log(game.checkRow(1, 5));
 // console.log(game.checkCol(1, 8));
-console.log(game.checkArea(9));
+console.log(game.checkArea(2, 5, 5));
