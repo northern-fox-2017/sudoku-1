@@ -31,7 +31,6 @@ class Sudoku {
     for (let i = 0; i < 9; i++) {
       if(this.boardArr[row][i] == input) {
           this.boolean = false;
-
       }
     }
 
@@ -48,6 +47,16 @@ class Sudoku {
     return this.boolean;
   }
 
+  checkArea(input) {
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        if(this.boardArr[i][j] == input) {
+          this.boolean = false;
+        }
+      }
+    }
+    return this.boolean;
+  }
 }
 
 // The file has newlines at the end of each line,
@@ -64,4 +73,5 @@ game.solve()
 
 console.log(game.board())
 // console.log(game.checkRow(1, 5));
-console.log(game.checkCol(1, 8));
+// console.log(game.checkCol(1, 8));
+console.log(game.checkArea(9));
