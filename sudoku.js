@@ -2,8 +2,8 @@
 
 class Sudoku {
   constructor(board_string) {}
-  
        
+      //this.trueOrFalse = true 
   
   solve() {
 	var tampung = '';
@@ -26,6 +26,33 @@ class Sudoku {
   }
   return arr
   }
+  
+  cekBaris(baris, angka){
+	  let trueOrFalse = true 
+	  for(var i = 0; i < this.board().length; i++){
+		  if(this.board()[baris][i] == angka){
+			  trueOrFalse = false
+		  } else if (this.board()[baris][i] !== angka){
+			  
+		  }
+		  //console.log(this.board()[baris][i])
+     }
+	 
+	 return trueOrFalse
+     
+  }
+  
+  cekKolom(kolom, angka){
+	  let trueOrFalse = true
+	  for(var i = 0; i < this.board().length; i++){
+		  if(this.board()[i][kolom] == angka){
+			  trueOrFalse = false
+		  } else if (this.board()[i][kolom] !== angka){
+			  
+		  }
+	  }
+	  return trueOrFalse
+  }
 }
 
 // The file has newlines at the end of each line,
@@ -39,5 +66,12 @@ var game = new Sudoku('619030040270061008000047621486302079000014580031009060005
 
 // Remember: this will just fill out what it can and not "guess"
 game.solve()
+//console.log(game.cek())
+//console.log(game.board())
+console.log(game.cekBaris(0, 7))
+console.log(game.cekKolom(0, 1))
 
-console.log(game.board())
+
+
+
+
