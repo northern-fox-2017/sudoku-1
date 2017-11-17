@@ -2,101 +2,92 @@
 
 class Sudoku {
   constructor(board_string) {
-    this.board_string = board_string;
-    this.angka        = [1,2,3,4,5,6,7,8,9,]
-    this.arr          = []
+    this.str = board_string
+    this.angka = [1,2,3,4,5,6,7,8,9]
+    this.newBoard = []
+
   }
 
   solve() {
+   for (let i = 0; i < 9; i++) {
+     for (let j = 0; j < 9; j++) {
 
-    // for (let i = 0; i < 9; i++) {
-    //   for (let j = 0; j < 9; j++) {
-    //     if (this.arr[i][j] == 0) {
-    //
-    //     }
-    //   }
-    // }
-
+       if (this.newBoard[i][j] == 0) {
+         this.angka.map(angka=> {
+           if (this.cekBoard(angka, i, j)) {
+             this.newBoard[i][j] = angka
+           }
+         });
+       }
+     }
+   }
+   return this.newBoard;
   }
 
-  // Returns a string representing the current state of the board
   board() {
+
+
     let no = 0;
+
     for (let i = 0; i < 9; i++) {
-      this.arr.push([])
+      this.newBoard.push([])
       for (let j = 0; j < 9; j++) {
-        this.arr[i].push(this.board_string[no])
-        no++
+
+          this.newBoard[i].push(parseInt(this.str[no]));
+          no+=1
       }
     }
 
-    return this.arr;
+    return this.newBoard
   }
 
-  cekBaris(index, angka){
-    let baris = this.board()[index];
-    console.log(baris);
+  cekBaris(angka, row, col){
+    let baris = this.newBoard[row];
 
-    return baris.indexOf(angka) === -1;
-
+    return baris.indexOf(angka === -1)
   }
 
-  cekKolom(index, angka){
-    let kolom = this.board().map(function(kolom) {
-      return kolom[index];
-    })
-    console.log(kolom);
+  cekKolom(angka, row, col){
+    let kolom = this.newBoard.map(function(baris) { return baris[col]; });
 
-    return kolom.indexOf(angka) === -1;
+    return kolom.indexOf(angka) === -1
   }
 
-  cekBox(row, col, angka){
-    // console.log(angka);
-    let baris = Math.floor(row / 3) * 3;
-    let kolom = Math.floor(row / 3) * 3;
 
-    let newArr = [];
+  cekBox(angka, row, col){
 
-    for (let i = 0; i < baris + 3; i++) {
-      for (let j = 0; j < kolom + 3; j++) {
-        newArr.push(this.board()[i][j])
+    let baris = Math.floor(row/3) * 3
+    let kolom = Math.floor(col/3) * 3
+
+    let arr = []
+    for (var i = baris; i < baris + 3; i++) {
+      for (var j = kolom; j < kolom + 3; j++) {
+
+        arr.push(this.newBoard[i][j])
       }
     }
-    console.log(newArr);
-    return newArr.indexOf(angka) === -1;
+
+    return arr.indexOf(angka) === -1
+
   }
 
-  cekBoard(){
-    if (this.cekBaris() && this.cekKolom() && this.cekBoard()) {
-
-    }
+  cekBoard(angka, row, col){
+    return this.cekBaris(angka, row, col) && this.cekKolom(angka, row, col) && this.cekBox(angka, row, col);
   }
-  // cekKolom(index, angka){
-  //   console.log(this.board()[0]);
-  //   let baris = this.board()[index];
-  //
-  //   return baris.indexOf(angka) === -1;
-  //
-  // }
-
 
 }
 
 // The file has newlines at the end of each line,
 // so we call split to remove it (\n)
 var fs = require('fs')
-var board_string = fs.readFileSync('set-01_sample.unsolved.txt')
+var board_string =fs.readFileSync('set-01_sample.unsolved.txt')
   .toString()
-  .split("\n")[0]
+  .split("\n")[0];
 
 var game = new Sudoku(board_string)
 
 // Remember: this will just fill out what it can and not "guess"
-// game.solve()
+game.board()
 
-// console.log(game.cekBaris(0, '1'))
-
-// console.log(game.cekKolom(0, '1'));
-
-console.log(game.cekBox(0, 0, '1'));
-// console.log(game.board())
+console.log(' SOLVE ')
+console.log(game.solve());
