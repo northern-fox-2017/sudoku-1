@@ -5,24 +5,50 @@
 class Sudoku {
   constructor(board_string) {
     this.board_string = board_string
+    this.dir =  '123456789'
+    this.status= true;
+    this.row = 9
+    this.col = 9
   }
 
   solve() {}
+
+  cekCol(col,input){
+
+    for (let i = 0; i < this.row; i++) {
+      if(this.board()[i][col]==input){
+        this.status = false
+      }
+      
+    }
+    return this.status
+    
+  }
+
+  cekRow(row,input){
+    for (let i = 0; i < this.row; i++) {
+      if(this.board()[row][i]==input){
+        this.status = false
+      }
+      
+    }
+    return this.status
+  }
 
   // Returns a string representing the current state of the board
   board() {
     let arrSudo = []
     let countPush = 0
-    for (let i = 0; i < 9; i++) {
+    for (let i = 0; i < this.row; i++) {
       arrSudo.push([])
-      for (let j = 0; j < 9 ; j++) {
+      for (let j = 0; j < this.col ; j++) {
         arrSudo[i].push(this.board_string[countPush])
         countPush++
         
       }  
     
     }
-    console.log(arrSudo)
+    return arrSudo
     
   }
 }
@@ -39,4 +65,5 @@ var game = new Sudoku('580200009007640520040081901900730676208309000006105000760
 // Remember: this will just fill out what it can and not "guess"
 // game.solve()
 
-console.log(game.board())
+// console.log(game.board())
+console.log(game.cekCol(1,5))
