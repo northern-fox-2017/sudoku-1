@@ -9,8 +9,8 @@ class Sudoku {
   }
 
   solve() {
-   for (let i = 0; i < 9; i++) {
-     for (let j = 0; j < 9; j++) {
+   for (let i = 0; i < this.newBoard.length; i++) {
+     for (let j = 0; j < this.newBoard[i].length; j++) {
 
        if (this.newBoard[i][j] == 0) {
          this.angka.map(angka=> {
@@ -41,23 +41,25 @@ class Sudoku {
     return this.newBoard
   }
 
-  cekBaris(angka, row, col){
+  cekBaris(angka, row){
     let baris = this.newBoard[row];
 
-    return baris.indexOf(angka === -1)
+    return baris.indexOf(angka) == -1
   }
 
-  cekKolom(angka, row, col){
+  cekKolom(angka, col){
+
     let kolom = this.newBoard.map(function(baris) { return baris[col]; });
 
-    return kolom.indexOf(angka) === -1
+
+    return kolom.indexOf(angka) == -1
   }
 
 
   cekBox(angka, row, col){
 
-    let baris = Math.floor(row/3) * 3
-    let kolom = Math.floor(col/3) * 3
+    let baris = (Math.floor(row/3)) * 3
+    let kolom = (Math.floor(col/3)) * 3
 
     let arr = []
     for (var i = baris; i < baris + 3; i++) {
@@ -66,13 +68,15 @@ class Sudoku {
         arr.push(this.newBoard[i][j])
       }
     }
+    //
+    // console.log(arr);
 
     return arr.indexOf(angka) === -1
 
   }
 
   cekBoard(angka, row, col){
-    return this.cekBaris(angka, row, col) && this.cekKolom(angka, row, col) && this.cekBox(angka, row, col);
+    return this.cekBaris(angka, row) && this.cekKolom(angka, col) && this.cekBox(angka, row, col);
   }
 
 }
@@ -88,6 +92,13 @@ var game = new Sudoku(board_string)
 
 // Remember: this will just fill out what it can and not "guess"
 game.board()
-
+// console.log(game.board());
+// console.log(game.cekBox(9, 1, 1));
 console.log(' SOLVE ')
 console.log(game.solve());
+
+// backtrack
+/*
+  cari kordinat 0;
+  looping kordinat
+*/
