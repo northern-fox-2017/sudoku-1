@@ -25,6 +25,20 @@ class Sudoku {
     
   }
 
+  cekArea (input){
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        if(this.board()[i][j] == input){
+
+          this.status = false
+        }
+        
+      }
+      
+    }
+    return this.status
+  }
+
   cekRow(row,input){
     for (let i = 0; i < this.row; i++) {
       if(this.board()[row][i]==input){
@@ -46,7 +60,6 @@ class Sudoku {
         countPush++
         
       }  
-    
     }
     return arrSudo
     
@@ -66,4 +79,5 @@ var game = new Sudoku('580200009007640520040081901900730676208309000006105000760
 // game.solve()
 
 console.log(game.board())
-console.log(game.cekCol(1,5))
+// console.log(game.cekCol(1,5))
+console.log(game.cekArea(2))
