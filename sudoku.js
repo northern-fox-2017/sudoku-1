@@ -4,7 +4,6 @@ class Sudoku {
   constructor(board_string) {
     this.board_string = board_string;
     this.papan = [];
-    this.kamus = '123456789';
     this.angka = true;
   }
 
@@ -38,9 +37,11 @@ class Sudoku {
     return this.angka;
   }
 
-  checkArea(input){
-    for (var i = 0; i < 3; i++) {
-      for (var j = 0; j < 3; j++) {
+  checkArea(row,col,input){
+    col = Math.floor(col/3)*3;
+    row = Math.floor(row/3)*3;
+    for (var i = row; i < (3 + row); i++) {
+      for (var j = col; j < (3 + col); j++) {
         if(this.papan[i][j] == input){
           this.angka = false;
         }
@@ -65,5 +66,5 @@ game.solve()
 console.log(game.board());
 // console.log(game.checkRow(0,7));
 // console.log(game.checkCol(0,3));
-console.log(game.checkArea(2));
+console.log(game.checkArea(8,8,3));
 // console.log(game.board().cekRow());
