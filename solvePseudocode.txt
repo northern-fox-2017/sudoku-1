@@ -1,0 +1,32 @@
+
+
+
+localArray <= globalArray
+
+find nearest empty
+nearest empty is posiition to place current_cell
+assign current_cell with YANG BOLEH
+
+
+IF( no more empty cell)  {
+  return array
+}ELSE{
+  WHILE ( solve(next_array) == 0 && current_cell YANGBOLEH){
+    current_cell++
+    assign next_array with current_cell
+
+    IF (current_cell > 9){
+      return 0
+    }
+  } 
+  return next_array
+}
+
+
+
+
+
+
+IF ( mismatch ) {
+  return 0
+} ELSE 

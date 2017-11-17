@@ -53,36 +53,44 @@ class Sudoku {
 
 
 
-  solve() {
+  solve(arrBoard) {
+    let currentRow = this.findNearestEmpty(arrBoard)[0];
+    let currentCol = this.findNearestEmpty(arrBoard)[1];
+   
+    if (currentRow === -1 && currentCol === -1){
+      return arrBoard
+      //console.log(arrBoard)
+    } else{
+      //console.log(arrBoard)
+      let nextBoard = arrBoard;
+      let currentCellValue = 1;
+      while ( !this.isCellClear(currentRow, currentCol, currentCellValue)){ 
+        currentCellValue++;
+      }
+      nextBoard[currentRow][currentCol] = currentCellValue;
+      //IF current calue ok.. taro..cek berikutnya 
+      if (this.solve(nextBoard)!== 0){
+      }
+        while ( !this.isCellClear(currentRow, currentCol, currentCellValue)){ 
+          currentCellValue++;
+          if (currentCellValue>9){
+            return 0
+          }
+        }  
+        nextBoard[currentRow][currentCol] = currentCellValue;
+    }
+    
+  }
 
-    //SOLVE AREA 1
-    //cek titik kosong pertama
-    //mulai dari angka 1
-    //kalau oke taro 1, kalo ngga lanjut sampai 9, kalo ada yang ketemu taro
-    //lanjut ke titik kosong berikutnya,
-    //laklukan hal yang sama sama tadi
-    //ceritanya sampe titik terakhir.. tapi gagal,
-    //reset yang tadi
-    //ulangi tapi mulainya dari 2 
-    let beginRow = 0;
-    let beginCol = 0;
-    let checkNumArea = 1
-    let tempBoard = this.arrSudoku;
-    for (let i = beginRow ; i < beginRow+3 ; i++){
-      for (let j = beginCol ; j < beginCol+3 ; j++){
-        //masukin angka yang bisa dimasukin
-        let checkNumCell = 1;
+  findNearestEmpty(){ //find nearest empty cell on array, returns [row, col]
+    for (let i = 0 ; i < this.row ; i++){
+      for (let j = 0 ; j < this.col ; j++){
         if (this.arrSudoku[i][j] === 0){
-          let checkNumCell = 1;
-          do {
-            if (this.isCellClear(i,j,checkNumCell)){
-              this.arrSudoku[i][j] = checkNumCell; 
-            } 
-            checkNumCell++
-          } while ( !this.isCellClear(i,j,checkNumCell) && checkNumCell<9)
+          return [i,j]
         }
       }
     }
+    return [-1,-1];
   }
 
   board() {  // Returns a string representing the current state of the board
@@ -117,8 +125,11 @@ var game = new Sudoku(board_string)
 game.generateBoard();
 // Remember: this will just fill out what it can and not "guess"
 
+console.log('BEFORE PROGRAM')
 game.board();
-// game.solve()
-// game.board();
+//console.log(game.findNearestEmpty(game.arrSudoku))
+game.solve(game.arrSudoku)
+console.log('AFTER PROGRAM')
+game.board();
 
 //console.log(game.isColClear(1,0, 7))
