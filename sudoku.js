@@ -2,7 +2,7 @@
 
 class Sudoku {
   constructor(board_string) {
-    this.board_string = board_string.toString();
+    this.board_string = board_string;
     this.wholeBoard = [];
   }
 
@@ -11,7 +11,9 @@ class Sudoku {
     return hasil;
   }
 
-  solve() {}
+  solve() {
+
+  }
 
   // Returns a string representing the current state of the board
   board() {
@@ -20,6 +22,7 @@ class Sudoku {
       var akhir = awal + 9;
       this.wholeBoard.push(this.cutString(awal, akhir));
     }
+
     var display = ''
 
     /**
@@ -27,25 +30,24 @@ class Sudoku {
      **/
 
     for (var j = 0; j < this.wholeBoard.length; j++) {
-      this.cekBaris(j, 9);
-      console.log(this.cekBaris(j));
+      console.log(this.cekBaris(j, 8));
+      // console.log(this.wholeBoard);
       display += ('| ' + this.wholeBoard[j].join(' | ') + ' |\n');
     }
     return display;
   }
 
-  cekKolom(num) {
+  cekKolom(num, input) {
     return false;
   }
 
   cekBaris(num, input) {
-    var baris = this.board_string[num];
-    for (var i = 0; i < baris.length; i++) {
-      if (input === baris[i]) {
-        return false;
-      } else {
-        return true;
-      }
+    var baris = this.wholeBoard[num];
+    console.log(baris)
+    if (baris.indexOf(input.toString())===-1){
+      return true;
+    } else{
+      return false;
     }
   }
 
@@ -68,3 +70,5 @@ var game = new Sudoku(board_string)
 game.solve()
 
 console.log(game.board())
+
+// console.log(game.wholeBoard[0].indexOf('8'));
