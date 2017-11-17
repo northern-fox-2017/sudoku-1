@@ -5,7 +5,9 @@ class Sudoku {
     this.board_string = board_string
   }
 
-  solve() {}
+  solve() {
+    
+  }
 
   // Returns a string representing the current state of the board
   board() {
