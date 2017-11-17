@@ -65,5 +65,5 @@ var game = new Sudoku('580200009007640520040081901900730676208309000006105000760
 // Remember: this will just fill out what it can and not "guess"
 // game.solve()
 
-// console.log(game.board())
+console.log(game.board())
 console.log(game.cekCol(1,5))
