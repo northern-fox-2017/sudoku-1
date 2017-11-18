@@ -7,9 +7,56 @@ class Sudoku {
     this.zeroKoor = []
   }
 
-  solve() {}
+  solve() {
+    for (let i = 0; i < 9; i++) {
+      for (let j = 0; j < 9; j++) {
+        if(this.papan[i][j] == 0){
+          for (let k = 1; k < 10; k++) {
+            if(this.cekBaris(i, k) == true){
+              if(this.cekKolom(j, k) == true){
+                if(this.cekArea(i, j, k) == true){
+                  this.papan[i][j] = k
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    return this.papan
+  }
 
-  // Returns a string representing the current state of the board
+  backTrack(){
+    let kordinat = this.zeroKoor
+    let row = []
+    let col = []
+    let arrTebakan = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+    for (let i = 0; i < kordinat.length; i++) {
+      row.push(kordinat[i][0])
+      col.push(kordinat[i][1])
+    }
+
+    for (let i = 0; i < row.length; i++) {
+      for(let j = 0; j < arrTebakan.length; j++){
+        if(this.cekBaris(row[i], arrTebakan[j]) == true){
+          if(this.cekKolom(col[i], arrTebakan[j]) == true){
+            if(this.cekArea(row[i], col[i], arrTebakan[j]) == true){
+              if(arrTebakan[j] == 10){
+                this.papan[row[i]][col[i]] = 0
+                i--
+              }
+              else{
+                this.papan[row[i]][col[i]] = arrTebakan[j]
+              }
+            }
+          }
+        }
+      }
+    }
+    return this.papan
+  }
+
   board() {
     let arrBoard = []
     let count = 0
@@ -17,7 +64,7 @@ class Sudoku {
     for(let i = 0; i < 9; i++){
       arrBoard.push([])
       for(let j = 0; j < 9; j++){
-        arrBoard[i].push(this.isiBoard[count])
+        arrBoard[i].push(+this.isiBoard[count])
         count++
       }
     }
@@ -85,7 +132,6 @@ class Sudoku {
         }
       }
     }
-    // console.log(this.papan[0][1]);
     return true
   }
 
@@ -101,10 +147,11 @@ const board_string = fs.readFileSync('set-01_sample.unsolved.txt')
 var game = new Sudoku(board_string)
 
 // Remember: this will just fill out what it can and not "guess"
-// game.solve()
-
-// console.log(game.board())
-// console.log(game.getZeroKoor());
+game.board()
+game.getZeroKoor()
+console.log(game.solve());
+console.log();
+console.log(game.backTrack())
 // console.log(game.cekBaris(0, 4));
 // console.log(game.cekKolom(0, 3));
-console.log(game.cekArea(0, 1, 2));
+// console.log(game.cekArea(0, 1, 2));
