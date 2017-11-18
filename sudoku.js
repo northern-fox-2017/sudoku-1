@@ -6,7 +6,27 @@ class Sudoku {
     this.arr = []
   }
 
-  solve() {}
+  solve() {
+    let panggilNol = this.cekNol();
+    let panggilBoard = this.board()
+    for (let i = 0; i < panggilNol.length; i++) {
+      let salah = true
+      let ekspektasi = 1
+      for (let j = 1; j < 9; j++) {
+        // console.log(panggilNol[i]);
+        if (this.cekBaris(panggilNol[i],ekspektasi) == true) {
+          if (this.cekKolom(panggilNol[i],ekspektasi)== true) {
+            if (this.cekArea(panggilNol[i],ekspektasi ) == true) {
+              panggilBoard[panggilNol[i][0]][panggilNol[i][1]] = String(ekspektasi);
+              salah = false;
+            }
+          }
+        }
+        ekspektasi++;
+      }
+    }
+    return panggilBoard;
+  }
 
   // Returns a string representing the current state of the board
   board() {
@@ -31,36 +51,46 @@ class Sudoku {
       }
     }
   }
-  console.log(this.arr);
+  return this.arr;
 }
-  cekBaris(baris,kolom,ekspektasi){
+
+
+  cekBaris(baris,ekspektasi){
     let panggil = this.board()
+    let getBaris = baris[0]
+    // console.log(getBaris);
     for (let i = 0; i < 9; i++) {
-      if(panggil[baris][i] == ekspektasi){
+      if(panggil[getBaris][i] == ekspektasi){
+        // console.log(panggil[getBaris][i]);
         return false;
       }
     }
     return true
   }
 
-  cekKolom(baris,kolom,ekspektasi){
+  cekKolom(kolom,ekspektasi){
     let panggil = this.board()
+    let getKolom = kolom[0]
     for (let i = 0; i < 9; i++) {
-      if(panggil[kolom][i] == ekspektasi){
+      if(panggil[i][getKolom] == ekspektasi){
         return false;
       }
     }
     return true
   }
 
-  cekArea(baris,kolom,ekspektasi){
-    let row = (Math.round(this.baris/3))*3
-    let col = (Math.round(this.col/3))*3
-    for (let i = 0; i < 3; i++) {
-      for (let j = 0; j < 3; j++) {
-        array[i]
+  cekArea(baris,ekspektasi){
+    let panggil = this.board()
+    let row = (Math.round(baris[0]/3))*3
+    let col = (Math.round(baris[1]/3))*3
+    for (let i = 0; i < row; i++) {
+      for (let j = 0; j < col; j++) {
+        if(panggil[i][j] == ekspektasi){
+          return false
+        }
       }
     }
+    return true
   }
 
 }
@@ -75,6 +105,6 @@ var board_string = fs.readFileSync('set-01_sample.unsolved.txt')
 var game = new Sudoku(board_string)
 
 // Remember: this will just fill out what it can and not "guess"
-game.solve()
+console.log(game.solve());
 
-console.log(game.cekNol())
+// console.log(game.cekArea())
