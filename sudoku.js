@@ -36,7 +36,6 @@ class Sudoku {
   isAreaClear(row, col, number){
     let beginRow = (Math.floor(row/3)*3)
     let beginCol = (Math.floor(col/3)*3)
-
     for (let i = beginRow ; i < (beginRow+3) ; i++){
       for (let j = beginCol ; j < (beginCol+3) ; j++){
         if (this.arrSudoku[i][j] === number){
@@ -51,51 +50,38 @@ class Sudoku {
     return (this.isRowClear(row, number) && this.isColClear(col, number) && this.isAreaClear(row, col, number));
   }
 
-
-
-  solve(arrBoard) {
-    let nextBoard = arrBoard;
-    let currentRow = this.findNearestEmpty(arrBoard)[0];
-    let currentCol = this.findNearestEmpty(arrBoard)[1];
+  solve() {
+    let currentRow = this.findNearestEmpty(this.arrSudoku)[0];
+    let currentCol = this.findNearestEmpty(this.arrSudoku)[1];
     let resetCellValue = 0;
     let nextCellValue = 1;
 
     if (currentRow === -1 && currentCol === -1){
-      return arrBoard
-      //console.log(arrBoard)
-    } else{
-
-      
+      return this.arrSudoku
+    } else{     
       while ( !this.isCellClear(currentRow, currentCol, nextCellValue) && nextCellValue<10){ 
         nextCellValue++;
          if (nextCellValue>9){
-          nextBoard[currentRow][currentCol] = resetCellValue;
+          this.arrSudoku[currentRow][currentCol] = resetCellValue;
           return 0
         }
       }
-      nextBoard[currentRow][currentCol] = nextCellValue;
-      let future = this.solve(nextBoard);
+      this.arrSudoku[currentRow][currentCol] = nextCellValue;
+      let future = this.solve(this.arrSudoku);
        while (future === 0){
         while ( !this.isCellClear(currentRow, currentCol, nextCellValue) && nextCellValue<10){ 
           nextCellValue++;
            if (nextCellValue>9){
-            nextBoard[currentRow][currentCol] = resetCellValue;
+            this.arrSudoku[currentRow][currentCol] = resetCellValue;
             return 0
           }
         }
-        nextBoard[currentRow][currentCol] = nextCellValue;
-        future = this.solve(nextBoard)
+        this.arrSudoku[currentRow][currentCol] = nextCellValue;
+        future = this.solve(this.arrSudoku)
       }
-      return this.solve(nextBoard); 
-
-
+      return this.solve(this.arrSudoku); 
     }
-
   }
-
-
-
-
 
   findNearestEmpty(){ //find nearest empty cell on array, returns [row, col]
     for (let i = 0 ; i < this.row ; i++){
@@ -128,43 +114,20 @@ class Sudoku {
   }
 }
 
-
-function printBoard(arr) {  // Returns a string representing the current state of the board
-  console.log('-------------------------')
-  for (let i = 0; i < 9; i++){
-    let rowText = ['|'];
-    for (let j = 0; j < 9 ; j++){
-      if (j === 2 || j === 5 || j === 8){
-        rowText += ' ' + arr[i][j] + ' |'
-      } else {
-        rowText += ' ' + arr[i][j]
-      }
-    }
-    console.log(rowText);
-    if (i === 2 || i === 5 || i === 9){
-      console.log('-------------------------')
-    }
-  }
-  console.log('-------------------------')
-}
-
-
 // The file has newlines at the end of each line,
 // so we call split to remove it (\n)
 var fs = require('fs')
 var board_string = fs.readFileSync('set-01_sample.unsolved.txt')
   .toString()
-  .split("\n")[1]
+  .split("\n")[4]
 
-var game = new Sudoku(board_string)
+var game = new Sudoku(board_string);
 game.generateBoard();
+
 // Remember: this will just fill out what it can and not "guess"
-
-console.log('BEFORE PROGRAM')
+console.log ('\n===== SUDOKU SOLVER =====\n')
+console.log('UNSOLVED BOARD');
 game.board();
-//console.log(game.findNearestEmpty(game.arrSudoku))
-game.solve(game.arrSudoku)
-console.log('AFTER PROGRAM')
-game.board();
-
-//console.log(game.isColClear(1,0, 7))
+game.solve();
+console.log('SOLVED BOARD');
+game.board()
