@@ -101,6 +101,84 @@ class Sudoku {
     return true
   }
   
+  eleminate_numbers(){
+    for (let i = 0; i < this.empty_blocks.length; i++) {
+      if (this.empty_blocks[i].answer.length == 1) {
+        // Assign answer to empty box based on it's coordinate
+        this.start_board[this.empty_blocks[i].baris][this.empty_blocks[i].kolom] = this.empty_blocks[i].answer[0]
+        // Eliminate same numbers from horizontal, vertical, area
+        this.cek_horizontal_new(this.empty_blocks[i].baris, this.empty_blocks[i].answer[0])
+        this.cek_vertical_new(this.empty_blocks[i].kolom, this.empty_blocks[i].answer[0])
+        this.cek_kuadran_new(this.empty_blocks[i].baris, this.empty_blocks[i].kolom, this.empty_blocks[i].answer[0])
+        // Remove this object from array
+        
+      }
+    }
+  }
+  
+  cek_horizontal_new(baris, answer){
+    for (let i = 0; i < this.empty_blocks.length; i++) {
+      if (this.empty_blocks[i].baris == baris && this.empty_blocks[i].answer.length > 1) {
+        for (let j = 0; j < answer.length; j++) {
+          if (this.empty_blocks[i].answer.indexOf(answer) != -1) {
+            this.empty_blocks[i].answer[this.empty_blocks[i].answer.indexOf(answer)] = 'x'
+          }
+        }
+      }
+    }
+  }
+  
+  cek_vertical_new(kolom, answer){
+    for (let i = 0; i < this.empty_blocks.length; i++) {
+      if (this.empty_blocks[i].kolom == kolom && this.empty_blocks[i].answer.length > 1) {
+        for (let j = 0; j < answer.length; j++) {
+          if (this.empty_blocks[i].answer.indexOf(answer) != -1) {
+            this.empty_blocks[i].answer[this.empty_blocks[i].answer.indexOf(answer)] = 'x'
+          }
+        }
+      }
+    }
+  }
+  
+  cek_kuadran_new(baris, kolom, answer){
+    let baris_bawah = 0
+    let baris_atas = 0
+    let kolom_bawah = 0
+    let kolom_atas = 0
+    if (baris < 3) {
+      baris_bawah = 0
+      baris_atas = 3
+    } else if (baris > 2 && baris < 6) {
+      baris_bawah = 3
+      baris_atas = 6
+    } else if (baris > 5 && baris < 9) {
+      baris_bawah = 6
+      baris_atas = 9
+    }
+    
+    if (kolom < 3) {
+      kolom_bawah = 0
+      kolom_atas = 3
+    } else if (kolom > 2 && kolom < 6) {
+      kolom_bawah = 3
+      kolom_atas = 6
+    } else if (kolom > 5 && kolom < 9) {
+      kolom_bawah = 6
+      kolom_atas = 9
+    }
+    
+    for (let i = 0; i < this.empty_blocks.length; i++) {
+      if (this.empty_blocks[i].baris >= baris_bawah && this.empty_blocks[i].baris < baris_atas && this.empty_blocks[i].kolom >= kolom_bawah && this.empty_blocks[i].kolom < kolom_atas && this.empty_blocks[i].answer.length > 1) {
+        for (let j = 0; j < answer.length; j++) {
+          if (this.empty_blocks[i].answer.indexOf(answer) != -1) {
+            this.empty_blocks[i].answer[this.empty_blocks[i].answer.indexOf(answer)] = 'x'
+          }
+        }
+      }
+    }
+    
+  }
+  
   getZero(){
     for (let i = 0; i < this.start_board.length; i++) {
       for (let j = 0; j < this.start_board[i].length; j++) {
@@ -203,8 +281,21 @@ console.log(game.start_board);
 // game.solve()
 // console.log(game.start_board);
 game.getZero()
-console.log('Data kotak kosong');
-console.log(game.empty_blocks);
+// console.log('Data kotak kosong');
+// console.log(game.empty_blocks);
+
+game.eleminate_numbers()
+// console.log('Tandai dengan x');
+// console.log(game.empty_blocks);
+console.log('setelah eliminasi pertama');
+console.log(game.start_board);
+
+// console.log(game.empty_blocks[0].baris);
+// console.log(game.empty_blocks[0].kolom);
+// console.log(game.empty_blocks[0].answer);
+// console.log(game.empty_blocks[0].answer[0]);
+// console.log(typeof game.empty_blocks[0].answer[0])
+// console.log(game.empty_blocks[0].answer.indexOf('4'))
 
 // console.log(game.board())
 // console.log(board_string);
