@@ -1,101 +1,132 @@
+
 "use strict"
 
+const IndexMapper = require('./indexMapper')
 
 class Sudoku {
   constructor(board_string) {
     this.puzzle = board_string.split('').map(Number)
-    this.sudoLen = 9
-    this.data = []
-  }
-  
-  solve() { }
-
-  board() {
-    return this.getRows().map(row =>{
-      return row.join(' ')
-    }).join('\n')
+    this.mapper = new IndexMapper()
+    this.zeroMapped = this.getZeroMapped() // one time initilization
+    //this.sudoLen = 9
   }
 
-  // isValid(row){ 
-  //   var x =  row.filter(num => num > 0).filter((num,index, arr) =>{
-  //     return arr.indexOf(num) !== index
-  //   })
-  //   return x.length === 0
-  // }
-
-  checkRow(rowIndex, input){
-    return this.getRows()[rowIndex].indexOf(input) === -1
-  }
-  checkColumn(colIndex,input){
-    return this.getColumns()[colIndex].indexOf(input) === -1
-  }
-  checkRegion(regIndex, input){
-    return this.getRegions()[regIndex].indexOf(input) === -1
-  }
-  
-  getRows() {
-    let rows = []
-    for (let i = 0; i < 9 * 9; i += 9) {
-      let row = []
-      for (let j = i; j < i + 9; j++) {
-        row.push(this.puzzle[j])
-      }
-      rows.push(row)
-    }
-    return rows
+  getZeroMapped() {
+    return this.mapper.indexesMapped.filter(item => {
+      return this.puzzle[item.i] === 0
+    })
   }
 
-  getColumns() {
-    let cols = [];
-    for (let i = 0; i < 9; i++) {
-      let col = [];
-      for (let j = i; j < 9 * 9; j += 9) {
-        col.push(this.puzzle[j]); 
-      }
-      cols.push(col);
-    }
-    return cols;
+
+  mutatePuzzle(atIndex, replaceWith) { 
+    let left = this.puzzle.slice(0, atIndex)
+    let right = this.puzzle.slice(atIndex + 1)
+    this.puzzle = this.puzzle.slice(0, atIndex).concat(replaceWith, right);
   }
-  getRegions() {
-    let regWidth = 3;
-    let regions = [];
-    for (let i = 0; i < 9; i += regWidth) {
-      let x = i * 9;
-      for (let j = 0; j < regWidth; j++) {
-        let head = x + j * regWidth;
-        let tail =head +
-          Math.pow(regWidth, regWidth) - 9 +
-          (regWidth - 1);
-        let region = [];
-        for (let k = head; k <= tail; k += 9) {
-          for (let m = k; m < k + regWidth; m++) {
-            region.push(this.puzzle[m]); // m indexnya
+  solve() { 
+    for (let i = 0; i < this.zeroMapped.length; i++) { // loop zero occurence
+      let iMap = this.zeroMapped[i]
+      let newCandidate = this.puzzle[iMap.i]
+      //console.log(this.board()) < visualisasi
+      while (true) {
+        newCandidate++
+        if (newCandidate <= 9 && this.checkAll(iMap, newCandidate)) {
+          this.mutatePuzzle(iMap.i, newCandidate)
+          break // maju
+        } else {
+          this.mutatePuzzle(iMap.i, 0) // sebelum mundur reset current with 0
+          if (newCandidate > 9) {
+            i -= 2
+            break // mundur
           }
         }
-        regions.push(region);
       }
     }
-    return regions;
   }
 
-} //end of class
+  board() {
+    var str = ''
+    let rows = this.getRows()
+    rows.forEach((row, z) => {
+      let strx = ''
+      row.forEach((a, b) => {
+        if (a == 0) {
+          strx += '\x1b[31m ' + a + ' \x1b[0m'
+        } else {
+          strx += '\x1b[0m ' + a + ' \x1b[0m'
+        }
+        if ((b + 1) % 3 === 0 && b !== 8) {
+          strx += '  '
+        }
+      })
+      if ((z + 1) % 3 === 0 && z !== 8) {
+        strx += '\n'
+      }
+      str += strx + '\n'
+    })
+    return str + '\n - - - - - - - + - - - - - - - \n'
+  }
 
-// The file has newlines at the end of each line,
-// so we call split to remove it (\n)
-let fs = require('fs')
-let board_string = fs.readFileSync('set-01_sample.unsolved.txt')
-  .toString()
-  .split("\n")[0]
 
+  getRows() {
+    return this.mapper.rowsIndexes.map(row => {
+      return row.map(i => this.puzzle[i])
+    })
+  }
+
+  checkAll(iMap, candidate) {
+    return this.checkRow(iMap.iRow, candidate) && this.checkColumn(iMap.iColumn, candidate) && this.checkRegion(iMap.iRegion, candidate)
+  }
+
+  checkRow(rowIndex, input) { //linear search
+    for (let i of this.mapper.rowsIndexes[rowIndex]) {
+      if (this.puzzle[i] === input) return false
+    }
+    return true
+  }
+  checkColumn(colIndex, input) {
+    for (let i of this.mapper.columnsIndexes[colIndex]) {
+      if (this.puzzle[i] === input) return false
+    }
+    return true
+  }
+  checkRegion(regIndex, input) {
+    for (let i of this.mapper.regionsIndexes[regIndex]) {
+      if (this.puzzle[i] === input) return false
+    }
+    return true
+  }
+
+
+}
+
+
+//let fs = require('fs')
+// let board_string = fs.readFileSync('set-01_sample.unsolved.txt')
+//   .toString()
+//   .split("\n")[3]
+
+// WORLD HARDEST SUDOKU (Arto Inkala). solved
+let board_string = '800000000003600000070090200050007000000045700000100030001000068008500010090000400'
 let game = new Sudoku(board_string)
 
 // Remember: this will just fill out what it can and not "guess"
-//game.solve()
+console.time('Solved in')
+console.log(game.board())
+game.solve()
+
 
 console.log(game.board())
-console.log(game.checkRow(0, 5)) // check input 5 dibaris ke 1
-console.log(game.checkColumn(1, 2))
-console.log(game.checkRegion(8, 3))
-//console.log(game.isValid([0,0,1,0,0,2,3,4,5]))
+console.timeEnd('Solved in')
 
+// console.log(game.checkRow(0,1))
+// console.log(game.checkColumn(3,1))
+// console.log(game.checkRegion(1,1))
+//console.log(game.zeroMapped())
+// console.log(game.getRows())
+// console.log(game.getColumns())
+// console.log(game.getRegions())
+// console.log(game.checkRow(0, 5), 'game.checkRow(0, 5)') // check input 5 dibaris ke 1
+// console.log(game.checkColumn(1, 2), 'checkColumn(1, 2)')
+// console.log(game.checkRegion(8, 3), 'checkRegion(8, 3)')
 
