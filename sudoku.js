@@ -4,6 +4,20 @@ class Sudoku {
   constructor(board_string) {
     this.board_string = board_string;
     this.wholeBoard = [];
+    this.wholeColumn = [];
+
+    for (var i = 0; i < 9; i++) {
+      var awal = i * 9;
+      var akhir = awal + 9;
+      this.wholeBoard.push(this.cutString(awal, akhir));
+    }
+
+    for (var i = 0; i < this.wholeBoard.length; i++) {
+      this.wholeColumn.push([]);
+      for (var j = 0; j < this.wholeBoard.length; j++) {
+        this.wholeColumn[i].push(this.wholeBoard[j][i]);
+      }
+    }
   }
 
   cutString(a, b) {
@@ -17,11 +31,6 @@ class Sudoku {
 
   // Returns a string representing the current state of the board
   board() {
-    for (var i = 0; i < 9; i++) {
-      var awal = i * 9;
-      var akhir = awal + 9;
-      this.wholeBoard.push(this.cutString(awal, akhir));
-    }
 
     var display = ''
 
@@ -31,7 +40,6 @@ class Sudoku {
 
     for (var j = 0; j < this.wholeBoard.length; j++) {
       // console.log(this.cekBaris(j, 8));
-      console.log(this.cekKolom(j, 8));
       // console.log(this.wholeBoard);
       display += ('| ' + this.wholeBoard[j].join(' | ') + ' |\n');
     }
@@ -39,29 +47,21 @@ class Sudoku {
   }
 
   cekKolom(num, input) {
-    for (var i = 0; i < this.wholeBoard.length; i++) {
-      var tampungKolom = [];
-      for (var j = 0; j < this.wholeBoard.length; j++) {
-        tampungKolom.push(this.wholeBoard[j][i]);
-      }
-      // if(tampungKolom.indexOf(input)===-1){
-      //   return true;
-      // } else {
-      //   return false;
-      // }
-      console.log('Kolom ' + i + ' ' + typeof(tampungKolom[0]));
+    console.log(this.wholeColumn[num] + ' Ini Kolom');
+    var kolom =  this.wholeColumn[num].indexOf(input.toString());
+    if (kolom === -1) {
+      return false;
+    } else {
+      return true;
     }
-
-    // console.log(tampungKolom);
-    // return false;
   }
 
   cekBaris(num, input) {
     var baris = this.wholeBoard[num];
-    console.log(baris)
-    if (baris.indexOf(input.toString())===-1){
+    console.log(baris + ' Ini baris')
+    if (baris.indexOf(input.toString()) === -1) {
       return true;
-    } else{
+    } else {
       return false;
     }
   }
@@ -85,5 +85,7 @@ var game = new Sudoku(board_string)
 game.solve()
 
 console.log(game.board())
+console.log(game.cekBaris(0, 5));
+console.log(game.cekKolom(2, 5));
 
 // console.log(game.wholeBoard[0].indexOf('8'));
