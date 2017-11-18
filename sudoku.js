@@ -13,9 +13,7 @@ class Sudoku {
     
 
   }
-  solve() {
-
-  }
+ 
 
   // Returns a string representing the current state of the board
   board() {
@@ -40,8 +38,8 @@ class Sudoku {
   }
 
 
-  findRow(row, column){
-    this.tampungRowKosong = this.arrBoard[this.boardKosong[row][column]]
+  findRow(row){
+    this.tampungRowKosong = this.arrBoard[this.boardKosong[row][0]]
     return this
   }
 
@@ -81,15 +79,21 @@ class Sudoku {
     return this
   }
 
+  solve(){
+
+  }
+
+
  
 
 }
 
 let andrey = new Sudoku('105802000090076405200400819019007306762083090000061050007600030430020501600308900');
-andrey.board().findBoardKosong().findBoardKosong().findColumn(1).findGroup(0,1)
+andrey.board().findBoardKosong().findBoardKosong().findRow(0, 1).findColumn(1).findGroup(0,1)
 // console.log(andrey.board())
-// console.log(andrey.arrBoard)
+console.log(andrey.arrBoard)
 // console.log(andrey.boardKosong)
+console.log(andrey.tampungRowKosong)
 console.log(andrey.tampungColumnKosong)
 console.log(andrey.tampungGroupKosong)
 // console.log(andrey.findRow(0, 1))
