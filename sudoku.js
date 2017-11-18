@@ -6,6 +6,7 @@ class Sudoku {
     this.wholeBoard = [];
     this.wholeColumn = [];
     this.display = '';
+    this.region = [];
 
     for (var i = 0; i < 9; i++) { /* Untuk input baris kedalam board */
       var awal = i * 9;
@@ -40,9 +41,9 @@ class Sudoku {
     return this.display;
   }
 
-  cekKolom(num, input) {
-    var kolom = this.wholeColumn[num].indexOf(input.toString());
-    if (kolom === -1) {
+  cekKolom(kolom, input) {
+    var ketemu = this.wholeColumn[kolom].indexOf(input.toString());
+    if (ketemu === -1) {
       return false; /* jika tidak ditemukan return false */
     } else {
       return true; /* jika ditemukan return false */
@@ -58,8 +59,15 @@ class Sudoku {
     }
   }
 
-  cekGroup(num, input) {
-
+  cekGroup(input) {
+    for (var i = 0; i < this.wholeBoard.length; i++) {
+      this.region.push([]);
+      for (var j = 0; j < 3; j++) { /* Baris */
+        for (var k = 0; k < 3; k++) { /* Kolom */
+          this.region[i].push(this.wholeBoard[j][k]);
+        }
+      }
+    }
   }
 
 }
@@ -84,5 +92,7 @@ console.log('\n');
 console.log('KOLOM');
 console.log(game.wholeColumn[2]);
 console.log(game.cekKolom(2, 5));
-
-// console.log(game.wholeBoard[0].indexOf('8'));
+console.log('\n');
+console.log('GROUP/REGION');
+console.log(game.cekGroup());
+console.log(game.region);
