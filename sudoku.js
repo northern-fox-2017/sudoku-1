@@ -111,7 +111,27 @@ class Sudoku {
         this.cek_vertical_new(this.empty_blocks[i].kolom, this.empty_blocks[i].answer[0])
         this.cek_kuadran_new(this.empty_blocks[i].baris, this.empty_blocks[i].kolom, this.empty_blocks[i].answer[0])
         // Remove this object from array
-        
+        // this.empty_blocks.splice(i,1)
+      }
+    }
+    // Remove all assigned objects from array
+    for (let i = 0; i < this.empty_blocks.length; i++) {
+      if (this.empty_blocks[i].answer.length == 1 && this.empty_blocks[i+1].answer.length == 1) {
+        this.empty_blocks.splice(i,2)
+      } else if (this.empty_blocks[i].answer.length == 1) {
+        this.empty_blocks.splice(i,1)
+      }
+    }
+    // Remove every 'x' from all object's answer array
+    for (let i = 0; i < this.empty_blocks.length; i++) {
+      if (this.empty_blocks[i].answer.indexOf('x') != -1) {
+        for (let j = 0; j < this.empty_blocks[i].answer.length; j++) {
+          if (this.empty_blocks[i].answer[j] == 'x' && this.empty_blocks[i].answer[j+1] == 'x') {
+            this.empty_blocks[i].answer.splice(j,2)
+          } else if (this.empty_blocks[i].answer[j] == 'x') {
+            this.empty_blocks[i].answer.splice(j,1)
+          }
+        }
       }
     }
   }
@@ -275,20 +295,33 @@ var game = new Sudoku(board_string)
 
 // Remember: this will just fill out what it can and not "guess"
 game.board()
-console.log('AWAL');
-console.log(game.start_board);
+// console.log('AWAL');
+// console.log(game.start_board);
 // console.log('SOLVED');
 // game.solve()
 // console.log(game.start_board);
 game.getZero()
-// console.log('Data kotak kosong');
-// console.log(game.empty_blocks);
+console.log('Data kotak kosong');
+console.log(game.empty_blocks);
 
 game.eleminate_numbers()
 // console.log('Tandai dengan x');
+// console.log('ada object yang dieliminasi dan tanda x sudah hilang');
 // console.log(game.empty_blocks);
+// console.log(game.empty_blocks[16].answer.length);
 console.log('setelah eliminasi pertama');
-console.log(game.start_board);
+// console.log(game.start_board);
+console.log(game.empty_blocks);
+
+console.log('setelah eliminasi kedua');
+game.eleminate_numbers()
+// console.log(game.start_board);
+console.log(game.empty_blocks);
+
+console.log('setelah eliminasi ketiga');
+game.eleminate_numbers()
+// console.log(game.start_board);
+console.log(game.empty_blocks);
 
 // console.log(game.empty_blocks[0].baris);
 // console.log(game.empty_blocks[0].kolom);
