@@ -9,16 +9,16 @@ class Sudoku {
 
     board() {
     let newArr = this.number.split('');
-    for (var i = 0; i < newArr.length; i++) {
+    for (let i = 0; i < newArr.length; i++) {
       this.boards.push(newArr.splice(0, 9));
     }
     return this.boards;
   }
 
-    getZero() { //untuk menentukan setzero untuk baris dan kolom
+    getZero() { //untuk menentukan setzero baris dan kolom
       //cek dlu tiap angka 0 di dalam board
-      for (var i = 0; i < this.boards.length; i++) {
-        for (var j = 0; j < this.boards[i].length; j++) {
+      for (let i = 0; i < this.boards.length; i++) {
+        for (let j = 0; j < this.boards[i].length; j++) {
           if (this.boards[i][j] == '0') {
             this.setZero.push([i, j]);
           }
@@ -28,7 +28,6 @@ class Sudoku {
     }
 
     checkRow(baris, angka) {
-      //console.log(this.board_string.length)
       for (let i = 0; i < this.boards[baris].length; i++) {
         // debugger
         if (this.boards[baris][i] == angka) {
@@ -73,7 +72,33 @@ class Sudoku {
     }
 
     solve() {
+      let baris, kolom, status, angka;
+      this.getZero();
+      // console.log(this.setZero.length)
+      for (let i = 0; i < this.setZero.length;) {
+        baris = this.setZero[i][0]
+        kolom = this.setZero[i][1]
+        angka = +this.boards[baris] [kolom] + 1
+          //console.log(angka);
+        status = false;
 
+        for (let j = angka; j <= 9; j++) {
+          // console.log(this.checkAngka(baris, kolom, angka))
+          if (this.checkAngka(baris, kolom, angka) === true) {
+            this.boards[baris][kolom] = angka.toString();
+            status = true
+            i++
+            break;
+          } else {
+            angka++
+          }
+        }
+        if (!status) {
+          this.boards[baris][kolom] = 0;
+          i--
+        }
+      }
+      return this.boards;
     }
 }
 
@@ -87,13 +112,12 @@ class Sudoku {
   var game = new Sudoku(board_string)
 
   // Remember: this will just fill out what it can and not "guess"
-
-
   console.log(game.board())
-  console.log(game.checkRow(0,3))
-  console.log(game.checkKolom(2,3))
-  console.log(game.checkArea3x3(0, 0, 1))
-
+  console.log("\n");
+  // console.log(game.checkRow(0,3))
+  // console.log(game.checkKolom(2,3))
+  // console.log(game.checkArea3x3(0, 0, 1))
+  console.log("Solve :");
   console.log(game.solve())
   // console.log(game.getZero());
   // console.log(game.checkAngka(1,2,4)
