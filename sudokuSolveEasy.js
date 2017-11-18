@@ -7,51 +7,25 @@ class Sudoku {
     this.posisiKosong =[]
   }
 
-  solve(i,j,kordinatX,kordinatY) {
-    let value = 0
-    for (j; j <= 9; j++) {
-      let tebakan = this.checkSolvetebakan(this.posisiKosong[i].tebakan[j],kordinatX,kordinatY)
-      if (tebakan) {
-        value = this.posisiKosong[i].tebakan[j]
-        this.arr[kordinatX][kordinatY] =j
-        this.posisiKosong[i].index = j
-        return true;
-      }
-
-    }
-
-    if (value === 0) {
-      console.log(kordinatX + ' ' + kordinatY);
-      console.log(this.posisiKosong[i].tebakan);
-      this.arr[kordinatX][kordinatY] = 0
-    }
-    return false
-  }
-
-  cariPosisiKosong(){
-    let i = 0
-    while( i < this.posisiKosong.length) {
-      debugger
+  solve() {
+    for (var i = 0; i < this.posisiKosong.length; i++) {
       let kordinatX = this.posisiKosong[i].x
       let kordinatY = this.posisiKosong[i].y
-      let indexobj = this.posisiKosong[i].index
-      let sukses = this.solve(i,indexobj,kordinatX,kordinatY)
-
-      if(sukses){
-        i++
-      }
-      else {
-        if(i != 0){
-          i--
-        }
-        if(indexobj <= 9){
-          this.posisiKosong[i].index = 0
+      for (var j = 0; j < this.posisiKosong[i].tebakan.length; j++) {
+        let tebakan = this.checkSolvetebakan(this.posisiKosong[i].tebakan[j],kordinatX,kordinatY)
+        if (tebakan) {
+          this.arr[kordinatX][kordinatY] = this.posisiKosong[i].tebakan[j]
+          this.posisiKosong[i].index = j
         }
       }
     }
     return this.arr
+  }
+
+  backtrack(){
 
   }
+
 
   checkSolvetebakan(tebakan,kordinatX,kordinatY){
     return this.checkRow(tebakan,kordinatX) && this.checkCol(tebakan,kordinatY) && this.checkRegion(tebakan,kordinatX,kordinatY)
@@ -62,7 +36,6 @@ class Sudoku {
     for (var i = 0; i < kosong.length; i++) {
       let kordinatX = kosong[i].x
       let kordinatY = kosong[i].y
-      // console.log(kordinatX + ' '+ kordinatY);
       let arr = []
       for (var j = 1; j <=9; j++) {
         if (this.checkRow(j,kordinatX) && this.checkCol(j,kordinatY) && this.checkRegion(j,kordinatX,kordinatY)){
@@ -71,7 +44,6 @@ class Sudoku {
       }
       if (arr.length ==  1 ){
         this.arr[kordinatX][kordinatY] = arr[0]
-        // this.posisiKosong[i].tebakan.splice(0,1)
       }
     }
   }
@@ -81,7 +53,6 @@ class Sudoku {
     for (var i = 0; i < this.posisiKosong.length; i++) {
       let kordinatX = this.posisiKosong[i].x
       let kordinatY = this.posisiKosong[i].y
-      // console.log(kordinatX + ' '+ kordinatY);
       for (var j = 1; j <=9; j++) {
         if (this.checkRow(j,kordinatX) && this.checkCol(j,kordinatY) && this.checkRegion(j,kordinatX,kordinatY)){
           this.posisiKosong[i].tebakan.push(j)
@@ -90,7 +61,6 @@ class Sudoku {
       if (this.posisiKosong[i].tebakan.length ==  1 ){
         this.arr[kordinatX][kordinatY] = this.posisiKosong[i].tebakan[0]
         this.posisiKosong[i].index = 0
-        // this.posisiKosong[i].tebakan.splice(0,1)
       }
     }
 
@@ -141,18 +111,16 @@ class Sudoku {
     }
     return this.arr
   }
-
   checkKosong() {
     let objposisi = []
     for (var i = 0; i < this.arr.length; i++) {
       let obj = {}
       for ( let j = 0; j < this.arr[i].length; j++) {
         if (this.arr[i][j] == 0){
-          // console.log(j);
           obj.x = i
           obj.y = j
           obj.tebakan = []
-          obj.index = 0
+          obj.index = ''
           objposisi.push(obj)
         }
         obj = {}
@@ -163,14 +131,31 @@ class Sudoku {
 }
 
 
+  //
+  //  1  4  5 | 8  9  2 | 6  7  3
+  //  8  9  3 | 1  7  6 | 4  2  5
+  //  2  7  6 | 4  3  5 | 8  1  9
+  // -----------------------------
+  //  5  1  9 | 2  4  7 | 3  8  6
+  //  7  6  2 | 5  8  3 | 1  9  4
+  //  3  8  4 | 9  6  1 | 7  5  2
+  // -----------------------------
+  //  9  5  7 | 6  1  4 | 2  3  8
+  //  4  3  8 | 7  2  9 | 5  6  1
+  //  6  2  1 | 3  5  8 | 9  4  7
+
+
+
+
+
 
 
 // The file has newlines at the end of each line,
 // so we call split to remove it (\n)
 var fs = require('fs')
-var board_string = fs.readFileSync('set-02_project-euler_50-easy-puzzles.txt')
+var board_string = fs.readFileSync('set-01_sample.unsolved.txt')
   .toString()
-  .split("\n")[2]
+  .split("\n")[0]
 
 var game = new Sudoku(board_string)
 
@@ -178,11 +163,8 @@ var game = new Sudoku(board_string)
 // game.solve()
 console.log(game.board())
 console.log();
-game.checkTebakanTunggal()
-game.checkTebakan();
-console.log();
-// console.log(game.cariPosisiKosong());
-console.log(game.posisiKosong);;
+console.log(game.checkTebakanTunggal());
 
-// console.log(game.posisiKosong);
-// console.log(game.checkRegion(7,4,2));
+console.log(game.checkTebakan());
+console.log();
+console.log(game.solve());
