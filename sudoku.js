@@ -4,11 +4,22 @@ class Sudoku {
   constructor(board_string) {
     this.board_string = board_string;
     this.papan = [];
-    this.angka = true;
   }
 
   solve() {
-
+    console.log(this.papan);
+for (let i = 0; i < 9; i++) {
+  for (let j = 0; j < 9; j++) {
+    if(this.papan[i][j] == 0) {
+      for (let h = 1; h <= 9; h++) {
+        if(this.checkRow(i,h) && this.checkCol(j,h) && this.checkArea(i,j,h)){
+          this.papan[i][j] = String(h);
+        }
+      }
+    }
+  }
+}
+return this.papan;
   }
 
   // Returns a string representing the current state of the board
@@ -20,36 +31,38 @@ class Sudoku {
   }
 
   checkRow(row,input){
-    for (var k = 0; k < 9; k++) {
+    let isRow = true;
+    for (var k = 0; k < this.papan.length; k++) {
       if(this.papan[row][k] == input){
-        this.angka = false;
+        isRow = false;
       }
     }
-    return this.angka;
+    return isRow;
   }
 
   checkCol(col,input){
-    for (var m = 0; m < 9; m++) {
+    let isCol = true;
+    for (var m = 0; m < this.papan.length; m++) {
       if(this.papan[m][col] == input){
-        this.angka = false;
+        isCol = false;
       }
     }
-    return this.angka;
+    return isCol;
   }
 
   checkArea(row,col,input){
+    let isArea = true;
     col = Math.floor(col/3)*3;
     row = Math.floor(row/3)*3;
     for (var i = row; i < (3 + row); i++) {
       for (var j = col; j < (3 + col); j++) {
         if(this.papan[i][j] == input){
-          this.angka = false;
+          isArea = false;
         }
       }
     }
-    return this.angka;
+    return isArea;
   }
-
 }
 
 // The file has newlines at the end of each line,
@@ -62,9 +75,11 @@ var board_string = fs.readFileSync('set-01_sample.unsolved.txt')
 var game = new Sudoku('105802000090076405200400819019007306762083090000061050007600030430020501600308900');
 
 // Remember: this will just fill out what it can and not "guess"
-game.solve()
+// game.solve()
 console.log(game.board());
-// console.log(game.checkRow(0,7));
-// console.log(game.checkCol(0,3));
-console.log(game.checkArea(8,8,3));
+console.log(game.checkRow(0,4));
+// console.log(game.checkCol(1,4));
+// console.log(game.checkArea(0,1,2));
+// console.log(game.checkValue(0,1,4));
 // console.log(game.board().cekRow());
+console.log(game.solve());
