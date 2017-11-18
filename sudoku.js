@@ -45,7 +45,6 @@ class Sudoku {
       }
 
       this.display += '\n';
-      // this.display += (this.wholeBoard[k].join(' ') + '\n');
     }
     return this.display;
   }
@@ -68,14 +67,26 @@ class Sudoku {
     }
   }
 
-  cekGroup(num, input) {
-    var group = [];
-    for (var j = 6; j < 9; j++) { /* Kolom */
-      for (var k = 0; k < 3; k++) { /* Baris */
-        group.push(this.wholeBoard[j][k]);
+  cekGroup(kolom, baris, input) {
+    kolom = Math.floor(kolom/3)*3;
+    baris = Math.floor(baris/3)*3;
+    var isFound = false;
+    for (var j = kolom; j < kolom+3; j++) { /* Kolom */
+      for (var k = baris; k < baris+3; k++) { /* Baris */
+        console.log(this.wholeBoard[j][k]);
+        if(this.wholeBoard[j][k] === input.toString()){
+          console.log(j + ' ' + k);
+          isFound = true; /*Ditemukan*/
+        }
       }
     }
-    return group;
+    return isFound;
+    // for (var j = 6; j < 9; j++) { /* Kolom */
+    //   for (var k = 6; k < 9; k++) { /* Baris */
+    //     group.push(this.wholeBoard[j][k]);
+    //   }
+    // }
+    // return group;
   }
 
 }
@@ -102,7 +113,7 @@ console.log(game.wholeColumn[2]);
 console.log(game.cekKolom(2, 5));
 console.log('\n');
 console.log('GROUP/REGION');
-console.log(game.cekGroup(9, 2));
+console.log(game.cekGroup(6, 2, 2));
 
 
 // =================================
