@@ -5,24 +5,72 @@ class Sudoku {
     this.str = board_string
     this.angka = [1,2,3,4,5,6,7,8,9]
     this.newBoard = []
+    this.nol = []
 
   }
 
-  solve() {
-   for (let i = 0; i < this.newBoard.length; i++) {
-     for (let j = 0; j < this.newBoard[i].length; j++) {
+  // solve() {
+  //  for (let i = 0; i < this.newBoard.length; i++) {
+  //    for (let j = 0; j < this.newBoard[i].length; j++) {
+  //
+  //      if (this.newBoard[i][j] == 0) {
+  //        this.angka.map(angka=> {
+  //          if (this.cekBoard(angka, i, j)) {
+  //            this.newBoard[i][j] = angka
+  //          }
+  //        });
+  //      }
+  //    }
+  //  }
+  //  return this.newBoard;
+  // }
 
-       if (this.newBoard[i][j] == 0) {
-         this.angka.map(angka=> {
-           if (this.cekBoard(angka, i, j)) {
-             this.newBoard[i][j] = angka
-           }
-         });
-       }
-     }
-   }
-   return this.newBoard;
+  backtrackSolver(){
+    let i = 0
+    // console.log(this.nol);
+    while (i < this.nol.length) {
+
+      // console.log('MASUK');
+      debugger;
+      let row = this.nol[i][0]
+      let col = this.nol[i][1]
+
+      // console.log(this.newBoard[row][col]);
+      let value = +(this.newBoard[row][col]) + 1;
+      let kondisi = false;
+
+      debugger
+      while(!kondisi && value <= 9){
+         if (this.cekBoard(value, row, col)) {
+          kondisi = true
+          this.newBoard[row][col] = value;
+          debugger;
+           i++
+        } else {
+          value++
+        }
+      }
+      if(!kondisi){
+        this.newBoard[row][col] = 0
+        i--
+      }
+    }
+
+    return this.newBoard;
   }
+
+  backtrack(){
+    for (let i = 0; i < 9; i++) {
+      for (var j = 0; j < 9; j++) {
+        if (this.newBoard[i][j] == 0) {
+          this.nol.push([i, j])
+        }
+      }
+    }
+
+    return this.nol;
+  }
+
 
   board() {
 
@@ -94,9 +142,12 @@ var game = new Sudoku(board_string)
 game.board()
 // console.log(game.board());
 // console.log(game.cekBox(9, 1, 1));
-console.log(' SOLVE ')
-console.log(game.solve());
-
+console.log('============ BACKTRACK - SOLVE =========')
+// console.log(game.solve());
+game.backtrack()
+// console.log(game.backtrack());
+// console.log(' BACKTRACK ');
+console.log(game.backtrackSolver());
 // backtrack
 /*
   cari kordinat 0;
