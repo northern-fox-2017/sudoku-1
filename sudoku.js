@@ -6,7 +6,7 @@ class Sudoku {
     this.wholeBoard = [];
     this.wholeColumn = [];
 
-    for (var i = 0; i < 9; i++) {
+    for (var i = 0; i < 9; i++) { /* Untuk input baris kedalam board */
       var awal = i * 9;
       var akhir = awal + 9;
       this.wholeBoard.push(this.cutString(awal, akhir));
@@ -33,14 +33,7 @@ class Sudoku {
   board() {
 
     var display = ''
-
-    /**
-     * Cek baris, jika ada yang sama dalam satu baris, return false
-     **/
-
     for (var j = 0; j < this.wholeBoard.length; j++) {
-      // console.log(this.cekBaris(j, 8));
-      // console.log(this.wholeBoard);
       display += ('| ' + this.wholeBoard[j].join(' | ') + ' |\n');
     }
     return display;
@@ -50,9 +43,9 @@ class Sudoku {
     console.log(this.wholeColumn[num] + ' Ini Kolom');
     var kolom =  this.wholeColumn[num].indexOf(input.toString());
     if (kolom === -1) {
-      return false;
+      return false; /* jika tidak ditemukan return false */
     } else {
-      return true;
+      return true; /* jika ditemukan return false */
     }
   }
 
@@ -60,13 +53,13 @@ class Sudoku {
     var baris = this.wholeBoard[num];
     console.log(baris + ' Ini baris')
     if (baris.indexOf(input.toString()) === -1) {
-      return true;
+      return false; /* jika tidak ditemukan return false */
     } else {
-      return false;
+      return true; /* jika ditemukan return true */
     }
   }
 
-  cekGroup(num) {
+  cekGroup(num, input) {
 
   }
 
