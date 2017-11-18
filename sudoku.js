@@ -55,10 +55,9 @@ class Sudoku {
     let currentCol = this.findNearestEmpty(this.arrSudoku)[1];
     let resetCellValue = 0;
     let nextCellValue = 1;
-
     if (currentRow === -1 && currentCol === -1){
       return this.arrSudoku
-    } else{     
+    } else{
       while ( !this.isCellClear(currentRow, currentCol, nextCellValue) && nextCellValue<10){ 
         nextCellValue++;
          if (nextCellValue>9){
