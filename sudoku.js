@@ -5,7 +5,7 @@ class Sudoku {
   }
 
   board() {
-    var arrayString = board_string.toString().split('')
+    var arrayString = board_string.split('')
     var newArr = []
     for (var i = 0; i < 9; i++) {
       newArr = []
@@ -47,9 +47,104 @@ class Sudoku {
     return true
   }
 
-  solver(){    
+  check3x3(number, row, column) {
+    if (row < 3 && column < 3) {
+      for (var i = 0; i < 3; i++) {
+        for (var j = 0; j < 3; j++) {
+          if (this.result[i][j] == number) {
+            return false
+          }
+        }
+      }
+      return true
+    } else if (row < 3 && column < 6) {
+      for (var i = 0; i < 3; i++) {
+        for (var j = 3; j < 6; j++) {
+          if (this.result[i][j] == number) {
+            return false
+          }
+        }
+      }
+      return true
+    } else if (row < 3 && column < 9) {
+      for (var i = 0; i < 3; i++) {
+        for (var j = 6; j < 9; j++) {
+          if (this.result[i][j] == number) {
+            return false
+          }
+        }
+      }
+      return true
+    } else if (row < 6 && column < 3) {
+      for (var i = 3; i < 6; i++) {
+        for (var j = 0; j < 3; j++) {
+          if (this.result[i][j] == number) {
+            return false
+          }
+        }
+      }
+      return true
+    } else if (row < 6 && column < 6) {
+      for (var i = 3; i < 6; i++) {
+        for (var j = 3; j < 6; j++) {
+          if (this.result[i][j] == number) {
+            return false
+          }
+        }
+      }
+      return true
+    } else if (row < 6 && column < 9) {
+      for (var i = 3; i < 6; i++) {
+        for (var j = 6; j < 9; j++) {
+          if (this.result[i][j] == number) {
+            return false
+          }
+        }
+      }
+      return true
+    } else if (row < 9 && column < 3) {
+      for (var i = 6; i < 9; i++) {
+        for (var j = 0; j < 3; j++) {
+          if (this.result[i][j] == number) {
+            return false
+          }
+        }
+      }
+      return true
+    } else if (row < 9 && column < 6) {
+      for (var i = 6; i < 9; i++) {
+        for (var j = 3; j < 6; j++) {
+          if (this.result[i][j] == number) {
+            return false
+          }
+        }
+      }
+      return true
+    } else if (row < 9 && column < 9) {
+      for (var i = 6; i < 9; i++) {
+        for (var j = 6; j < 9; j++) {
+          if (this.result[i][j] == number) {
+            return false
+          }
+        }
+      }
+      return true
+    }
   }
-  
+
+  checkEmpty() {
+    for (var i = 0; i < 9; i++) {
+      for (var j = 0; j < 9; j++) {
+        var newArr = []
+        if (this.result[i][j] == 0) {
+          newArr.push(i)
+          newArr.push(j)
+          this.result.push(newArr)
+        }
+      }
+    }
+  }
+
 }
 
 var board_string = "105802000090076405200400819019007306762083090000061050007600030430020501600308900"
@@ -59,3 +154,4 @@ console.log(game.board())
 console.log(game.printBoard());
 // console.log(game.checkColumn(1, 6));
 // console.log(game.checkColumn(6, 1));
+console.log(game.check3x3(6, 1, 2));
