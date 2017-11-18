@@ -38,31 +38,65 @@ class Sudoku {
     let startCol = (Math.floor(posCol/3))*3
     for (let i = startRow; i < startRow+3; i++) {
       for (let j = startCol; j < startCol+3; j++) {
-          if(this.board[i][j] == tebakan){
-            return false
-          }
+        if(this.board[i][j] == tebakan){
+          return false
         }
       }
     }
     return true
   }
   //method untuk cek samping
-  checkSamping(posCol, tebakan) {
-    for (let = 0; i < 9; i++) {
-      if(this.board[posRow][i] == tebakan){
+  checkSamping(posCol, posRow, tebakan) {
+    for (let i = 0; i < 9; i++) {
+      if(this.board[posCol][i] == tebakan){
         return false
       }
     }
     return true
   }
   //method untuk cek bawah
-  checkBawah(posRow, tebakan) {
-    for (let = 0; i < 9; i++) {
-      if(this.board[i][posCol] == tebakan){
+  checkBawah(posCol, posRow, tebakan) {
+    for (let i = 0; i < 9; i++) {
+      if(this.board[i][posRow] == tebakan){
         return false
       }
     }
     return true
+  }
+  //method untuk check semuanya
+  checkAll(posCol, posRow, tebakan){
+    if(this.checkSamping(posCol, posRow, tebakan) == false || this.checkBawah(posCol, posRow, tebakan) == false || this.checkKotak(posCol, posRow, tebakan) == false){
+      return false
+    }else if (this.checkSamping(posCol, posRow, tebakan) == true && this.checkBawah(posCol, posRow, tebakan) == true && this.checkKotak(posCol, posRow, tebakan) == true) {
+      return true
+    }
+  }
+  //method untuk isi 0
+  asignZero(){
+    for(let i = 0; i < this.posisinol.length; i++){
+      let posCol = this.posisinol[i][0]
+      let posRow = this.posisinol[i][1]
+      let tebakan = +this.board[posCol][posRow]+1
+      while(this.checkAll(posCol, posRow, tebakan) == false){
+        if(tebakan == 9 && this.checkAll(posCol, posRow, tebakan == true)){
+          this.board[posCol][posRow] = tebakan.toString()
+          i++
+
+        }else if (tebakan == 9 && this.checkAll(posCol, posRow, tebakan) == false) {
+          console.log(`${posCol}${posRow} backtrack ke ${this.posisinol[i-1]}`);
+          break;
+
+        }else if( tebakan < 9 && this.checkAll(posCol, posRow, tebakan) == true) {
+          this.board[posCol][posRow] = tebakan.toString()
+          i++
+
+        }else{
+          tebakan++
+        }
+
+      }
+      this.board[posCol][posRow] = tebakan.toString()
+    }
   }
 }
 
@@ -79,7 +113,8 @@ var game = new Sudoku(board_string)
 game.solve()
 game.board()
 game.getZero()
+game.asignZero()
 //console.log(game.board())
 console.log(game.board);
 //console.log(game.posisinol);
-//console.log(game.checkKotak(0,3,0));
+//console.log(game.checkAll(0,3,0));
