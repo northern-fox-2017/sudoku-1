@@ -53,7 +53,7 @@ class Sudoku {
         }
       }
     }
-    console.log(this.wholeBoard);
+    // console.log(this.wholeBoard);
     return this.display;
   }
 
@@ -73,6 +73,9 @@ class Sudoku {
 
       this.display += '\n';
     }
+    this.display += '\n';
+    this.display += '\n';
+    this.display += '\n';
     return this.display;
   }
 
@@ -132,7 +135,7 @@ var game = new Sudoku(board_string)
 // Remember: this will just fill out what it can and not "guess"
 // game.solve()
 
-console.log(game.board())
+console.log(game.board()) //Output masih belum seperti yang di inginkan
 // console.log('BARIS');
 // console.log(game.wholeBoard[0]);
 // console.log(game.cekBaris(0, 5));
@@ -144,6 +147,7 @@ console.log(game.board())
 // console.log('GROUP/REGION');
 // // console.log(game.box(6, 3, 2));
 game.solve();
+console.log(game.board());
 // =================================
 // 1 | 0 | 5 | 8 | 0 | 2 | 0 | 0 | 0
 // 0 | 9 | 0 | 0 | 7 | 6 | 4 | 0 | 5
