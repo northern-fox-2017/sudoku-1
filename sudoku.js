@@ -2,10 +2,16 @@
 
 class Sudoku {
   constructor(boardString) {
-  	this.boardString = boardString
-  	this.arrBoard = [];
-  	this.arrHorizontal = [];
-  	this.arrVertikal = [];
+    this.boardString = boardString
+    this.arrBoard = [];
+    this.boardKosong = [];
+    this.tampungBoardKosong = [];
+    this.tampungRowKosong = '';
+    this.tampungColumnKosong = [];
+    this.tampungGroupKosong = [];
+
+    
+
   }
   solve() {
 
@@ -14,44 +20,82 @@ class Sudoku {
   // Returns a string representing the current state of the board
   board() {
 
-  	let splitBoardString = this.boardString.split('');
-	for(let i = 0; i < 73; i+=9){
-		this.arrBoard.push(splitBoardString.slice(i, i+9))
+    let splitBoardString = this.boardString.split('');
+    for(let i = 0; i < 73; i+=9){
+      this.arrBoard.push(splitBoardString.slice(i, i+9))
 
-	}
-	return this.arrBoard
+    }
+    return this
   }
 
-  checkHorizontal(indexNumber){
-  	this.Horizontal = Math.floor(indexNumber / 9);
-  	this.arrHorizontal = this.arrBoard[this.Horizontal]
-
-  	return this.arrHorizontal
+  findBoardKosong(){
+    for(let i = 0; i < 9; i++){
+      for(let j = 0; j < 9; j++){
+        if(this.arrBoard[i][j] === '0'){
+          this.boardKosong.push([i, j])
+        }
+      }
+    }
+    return this
   }
 
-  checkVertikal(indexNumber){
-  	let indexNolVertikal = 0;
-  	for(let i = 72; i >= 0; i-=9){
-		if(indexNumber >= i){
-			indexNolVertikal = indexNumber - i;
-			break
-		}
-		// console.log(i)
-	}
-	for(let i = 0; i < 9; i++){
-		this.arrVertikal.push(this.arrBoard[i][indexNolVertikal])
 
-	}
-	return this.arrVertikal
+  findRow(row, column){
+    this.tampungRowKosong = this.arrBoard[this.boardKosong[row][column]]
+    return this
+  }
+
+  findColumn(column){
+    for(let j = 0; j < 9; j++){
+      this.tampungColumnKosong.push(this.arrBoard[j][column])
+      
+    }
+    return this
 
   }
+
+  findGroup(row, column){
+    let lingkupRow = [];
+    let lingkupColumn = [];
+    for(let i = 2; i < 9; i+=3){
+      if(row <= i){
+        for(let j = i - 2; j <= i; j++){
+          lingkupRow.push(j)
+        }
+        break
+      }
+    }
+    for(let i = 2; i < 9; i += 3){
+      if(column <= i){
+        for(let j = i - 2; j <= i; j++){
+          lingkupColumn.push(j)
+        }
+        break
+      }
+    }
+    for(let i = 0; i < 3; i++){
+      for(let j = 0; j < 3; j++){
+        this.tampungGroupKosong.push(this.arrBoard[lingkupRow[i]][lingkupColumn[j]])
+      }
+    }
+    return this
+  }
+
+ 
+
 }
 
 let andrey = new Sudoku('105802000090076405200400819019007306762083090000061050007600030430020501600308900');
-console.log(andrey.board())
-console.log(andrey.checkHorizontal(2))
-console.log(andrey.checkVertikal(2))
+andrey.board().findBoardKosong().findBoardKosong().findColumn(1).findGroup(0,1)
+// console.log(andrey.board())
+// console.log(andrey.arrBoard)
+// console.log(andrey.boardKosong)
+console.log(andrey.tampungColumnKosong)
+console.log(andrey.tampungGroupKosong)
+// console.log(andrey.findRow(0, 1))
 
+// console.log(andrey.checkHorizontal(28))
+// console.log(andrey.findBoardKosong())
 
 // The file has newlines at the end of each line,
 // so we call split to remove it (\n)
