@@ -5,6 +5,7 @@ class Sudoku {
     this.board_string = board_string;
     this.wholeBoard = [];
     this.wholeColumn = [];
+    this.display = '';
 
     for (var i = 0; i < 9; i++) { /* Untuk input baris kedalam board */
       var awal = i * 9;
@@ -20,7 +21,7 @@ class Sudoku {
     }
   }
 
-  cutString(a, b) {
+  cutString(a, b) { /*which a is the start and b is count of numbers*/
     var hasil = this.board_string.slice(a, b).split('');
     return hasil;
   }
@@ -31,17 +32,16 @@ class Sudoku {
 
   // Returns a string representing the current state of the board
   board() {
-
-    var display = ''
-    for (var j = 0; j < this.wholeBoard.length; j++) {
-      display += ('| ' + this.wholeBoard[j].join(' | ') + ' |\n');
+    this.display += ('=================================\n');
+    for (var k = 0; k < this.wholeBoard.length; k++) {
+      this.display += (this.wholeBoard[k].join(' | ') + '\n');
     }
-    return display;
+    this.display += ('=================================\n');
+    return this.display;
   }
 
   cekKolom(num, input) {
-    console.log(this.wholeColumn[num] + ' Ini Kolom');
-    var kolom =  this.wholeColumn[num].indexOf(input.toString());
+    var kolom = this.wholeColumn[num].indexOf(input.toString());
     if (kolom === -1) {
       return false; /* jika tidak ditemukan return false */
     } else {
@@ -51,7 +51,6 @@ class Sudoku {
 
   cekBaris(num, input) {
     var baris = this.wholeBoard[num];
-    console.log(baris + ' Ini baris')
     if (baris.indexOf(input.toString()) === -1) {
       return false; /* jika tidak ditemukan return false */
     } else {
@@ -78,7 +77,12 @@ var game = new Sudoku(board_string)
 game.solve()
 
 console.log(game.board())
+console.log('BARIS');
+console.log(game.wholeBoard[0]);
 console.log(game.cekBaris(0, 5));
+console.log('\n');
+console.log('KOLOM');
+console.log(game.wholeColumn[2]);
 console.log(game.cekKolom(2, 5));
 
 // console.log(game.wholeBoard[0].indexOf('8'));
