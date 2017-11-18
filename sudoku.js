@@ -54,33 +54,48 @@ class Sudoku {
 
 
   solve(arrBoard) {
+    let nextBoard = arrBoard;
     let currentRow = this.findNearestEmpty(arrBoard)[0];
     let currentCol = this.findNearestEmpty(arrBoard)[1];
-   
+    let resetCellValue = 0;
+    let nextCellValue = 1;
+
     if (currentRow === -1 && currentCol === -1){
       return arrBoard
       //console.log(arrBoard)
     } else{
-      //console.log(arrBoard)
-      let nextBoard = arrBoard;
-      let currentCellValue = 1;
-      while ( !this.isCellClear(currentRow, currentCol, currentCellValue)){ 
-        currentCellValue++;
+
+      
+      while ( !this.isCellClear(currentRow, currentCol, nextCellValue) && nextCellValue<10){ 
+        nextCellValue++;
+         if (nextCellValue>9){
+          nextBoard[currentRow][currentCol] = resetCellValue;
+          return 0
+        }
       }
-      nextBoard[currentRow][currentCol] = currentCellValue;
-      //IF current calue ok.. taro..cek berikutnya 
-      if (this.solve(nextBoard)!== 0){
-      }
-        while ( !this.isCellClear(currentRow, currentCol, currentCellValue)){ 
-          currentCellValue++;
-          if (currentCellValue>9){
+      nextBoard[currentRow][currentCol] = nextCellValue;
+      let future = this.solve(nextBoard);
+       while (future === 0){
+        while ( !this.isCellClear(currentRow, currentCol, nextCellValue) && nextCellValue<10){ 
+          nextCellValue++;
+           if (nextCellValue>9){
+            nextBoard[currentRow][currentCol] = resetCellValue;
             return 0
           }
-        }  
-        nextBoard[currentRow][currentCol] = currentCellValue;
+        }
+        nextBoard[currentRow][currentCol] = nextCellValue;
+        future = this.solve(nextBoard)
+      }
+      return this.solve(nextBoard); 
+
+
     }
-    
+
   }
+
+
+
+
 
   findNearestEmpty(){ //find nearest empty cell on array, returns [row, col]
     for (let i = 0 ; i < this.row ; i++){
@@ -114,12 +129,32 @@ class Sudoku {
 }
 
 
+function printBoard(arr) {  // Returns a string representing the current state of the board
+  console.log('-------------------------')
+  for (let i = 0; i < 9; i++){
+    let rowText = ['|'];
+    for (let j = 0; j < 9 ; j++){
+      if (j === 2 || j === 5 || j === 8){
+        rowText += ' ' + arr[i][j] + ' |'
+      } else {
+        rowText += ' ' + arr[i][j]
+      }
+    }
+    console.log(rowText);
+    if (i === 2 || i === 5 || i === 9){
+      console.log('-------------------------')
+    }
+  }
+  console.log('-------------------------')
+}
+
+
 // The file has newlines at the end of each line,
 // so we call split to remove it (\n)
 var fs = require('fs')
 var board_string = fs.readFileSync('set-01_sample.unsolved.txt')
   .toString()
-  .split("\n")[0]
+  .split("\n")[1]
 
 var game = new Sudoku(board_string)
 game.generateBoard();
