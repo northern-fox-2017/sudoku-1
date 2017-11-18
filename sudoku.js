@@ -17,12 +17,6 @@ class Sudoku {
     })
   }
 
-
-  mutatePuzzle(atIndex, replaceWith) { 
-    let left = this.puzzle.slice(0, atIndex)
-    let right = this.puzzle.slice(atIndex + 1)
-    this.puzzle = this.puzzle.slice(0, atIndex).concat(replaceWith, right);
-  }
   solve() { 
     for (let i = 0; i < this.zeroMapped.length; i++) { // loop zero occurence
       let iMap = this.zeroMapped[i]
@@ -31,10 +25,10 @@ class Sudoku {
       while (true) {
         newCandidate++
         if (newCandidate <= 9 && this.checkAll(iMap, newCandidate)) {
-          this.mutatePuzzle(iMap.i, newCandidate)
+          this.puzzle[iMap.i] = newCandidate
           break // maju
         } else {
-          this.mutatePuzzle(iMap.i, 0) // sebelum mundur reset current with 0
+          this.puzzle[iMap.i] = 0 // sebelum mundur reset current with 0
           if (newCandidate > 9) {
             i -= 2
             break // mundur
@@ -101,10 +95,10 @@ class Sudoku {
 }
 
 
-//let fs = require('fs')
+// let fs = require('fs')
 // let board_string = fs.readFileSync('set-01_sample.unsolved.txt')
 //   .toString()
-//   .split("\n")[3]
+//   .split("\n")[1]
 
 // WORLD HARDEST SUDOKU (Arto Inkala). solved
 let board_string = '800000000003600000070090200050007000000045700000100030001000068008500010090000400'
