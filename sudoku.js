@@ -7,7 +7,7 @@
 // cek horizontal -> tampung angka yg ada pada horizontal
 // cek vertical -> tampung angka yg ada pada vertical
 // cek area -> tampung angka yg ada pada area
-// bandingkan dengan library nswer. dengan indexOf jika angka di library tidak ada pada variabel tampunng (-1), maka push angka tersebut ke dalam array possible answer
+// bandingkan dengan library answer. dengan indexOf jika angka di library tidak ada pada variabel tampunng (-1), maka push angka tersebut ke dalam array possible answer
 // push object literal ke dalam array zero, berisi koordinat dan possible answer
 
 const fs = require('fs')
@@ -164,6 +164,7 @@ class Sudoku {
   
   getNumber(baris,kolom) {
     let numbers = []
+    let answer = []
     let horizontal = this.get_horizontal(baris)
     let vertical = this.get_vertical(kolom)
     let kuadran = this.get_kuadran(baris,kolom)
@@ -182,7 +183,12 @@ class Sudoku {
         numbers.push(kuadran[i].toString())
       }
     }
-    return numbers.sort()
+    for (let i = 0; i < this.input.length; i++) {
+      if (numbers.indexOf(this.input[i]) == -1) {
+        answer.push(this.input[i])
+      }
+    }
+    return answer.sort()
   }
   
 }
