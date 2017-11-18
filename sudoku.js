@@ -39,10 +39,19 @@ class Sudoku {
   }
 
   cekKolom(num, input) {
-    var tampungKolom = [];
     for (var i = 0; i < this.wholeBoard.length; i++) {
-      console.log(this.wholeBoard[i][i]);
+      var tampungKolom = [];
+      for (var j = 0; j < this.wholeBoard.length; j++) {
+        tampungKolom.push(this.wholeBoard[j][i]);
+      }
+      // if(tampungKolom.indexOf(input)===-1){
+      //   return true;
+      // } else {
+      //   return false;
+      // }
+      console.log('Kolom ' + i + ' ' + typeof(tampungKolom[0]));
     }
+
     // console.log(tampungKolom);
     // return false;
   }
