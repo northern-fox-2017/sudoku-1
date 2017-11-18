@@ -33,20 +33,27 @@ class Sudoku {
           for (var input = 1; input <= 9; input++) {
             console.log('MENCARI ' + input);
             console.log(i + ' ' + j + ' = ' + this.wholeBoard[i][j]);
+            console.log('KOLOM');
             console.log(this.cekKolom(i, input));
             console.log(this.wholeColumn[i]);
+            console.log('BARIS');
             console.log(this.cekBaris(j, input));
             console.log(this.wholeBoard[j]);
+            console.log('BOX');
             console.log(this.cekGroup(i, j, input));
             console.log(this.box(i, j, input));
             console.log(this.cekKolom(i, input) + this.cekBaris(j, input) + this.cekGroup(i, j, input));
-            if (!this.cekKolom(i, input) === true && !this.cekBaris(j, input) === true && !this.cekGroup(i, j, input) === true) {
-              this.wholeBoard[i][j] == input.toString()//   this.wholeBoard[i][j] = input.toString();
+            // if (this.cekKolom(i, input) === false && this.cekBaris(j, input) === false && this.cekGroup(i, j, input) === false) {
+            //   this.wholeBoard[i][j] == input.toString(); //   this.wholeBoard[i][j] = input.toString();
+            // }
+            if(this.cekKolom(i, input)===false && this.cekBaris(j, input)===false && this.cekGroup(i, j, input)===false){
+                this.wholeBoard[i][j] = input.toString();
             }
           }
         }
       }
     }
+    console.log(this.wholeBoard);
     return this.display;
   }
 
@@ -136,7 +143,7 @@ console.log(game.board())
 // console.log('\n');
 // console.log('GROUP/REGION');
 // // console.log(game.box(6, 3, 2));
-console.log(game.solve());
+game.solve();
 // =================================
 // 1 | 0 | 5 | 8 | 0 | 2 | 0 | 0 | 0
 // 0 | 9 | 0 | 0 | 7 | 6 | 4 | 0 | 5
