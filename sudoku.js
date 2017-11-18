@@ -73,29 +73,28 @@ class Sudoku {
   }
   //method untuk isi 0
   asignZero(){
-    for(let i = 0; i < this.posisinol.length; i++){
+    for (let i = 0; i < this.posisinol.length; i++){
       let posCol = this.posisinol[i][0]
       let posRow = this.posisinol[i][1]
       let tebakan = +this.board[posCol][posRow]+1
-      while(this.checkAll(posCol, posRow, tebakan) == false){
-        if(tebakan == 9 && this.checkAll(posCol, posRow, tebakan == true)){
-          this.board[posCol][posRow] = tebakan.toString()
-          i++
+      while (this.checkAll(posCol, posRow, tebakan) == false) {
+        debugger
+        //if(tebakan == 9 && this.checkAll(posCol, posRow, tebakan == true)){
+          //this.board[posCol][posRow] = tebakan.toString()
 
-        }else if (tebakan == 9 && this.checkAll(posCol, posRow, tebakan) == false) {
-          console.log(`${posCol}${posRow} backtrack ke ${this.posisinol[i-1]}`);
-          break;
+        //}else if( tebakan < 9 && this.checkAll(posCol, posRow, tebakan) == true) {
+          //this.board[posCol][posRow] = tebakan.toString()
 
-        }else if( tebakan < 9 && this.checkAll(posCol, posRow, tebakan) == true) {
-          this.board[posCol][posRow] = tebakan.toString()
-          i++
-
-        }else{
+        //}else{
           tebakan++
-        }
+        //}
 
       }
-      this.board[posCol][posRow] = tebakan.toString()
+      if (tebakan <= 9) {
+        this.board[posCol][posRow] = tebakan.toString()
+      } else {
+        i-1
+      }
     }
   }
 }
