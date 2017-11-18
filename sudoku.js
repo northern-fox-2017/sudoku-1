@@ -5,29 +5,135 @@ class Sudoku {
     this.board_string = board_string
     this.area = area
     this.board = []
+    this.arrOfZerosij = []
   }
-  solve() {
+
+  findZeros(){
+    console.log(this.board)
+
     for (var i = 0; i < this.board.length; i++) {
+      // console.log(".")
       for (var j = 0; j < this.board[i].length; j++) {
+        // console.log(".")
         if(this.board[i][j] == 0){
-          for(let x = 1;x <= 9;x++){
-            this.board[i][j] = x.toString()
-            if(!this.checkBoard()){
-              this.board[i][j] = '0'
+          // console.log('masuk if')
+          let arrayXY =[]
+          arrayXY.push(i)
+          arrayXY.push(j)
+          this.arrOfZerosij.push(arrayXY)
 
-            }
-            else{
-              break
-            }
+          }
+
         }
-
       }
-
+      return this.arrOfZerosij;
     }
 
-  }
-  return this.board
-}
+
+  solve(i = 0) {
+
+    //backtracking attempt 2 (recursive)
+    if(i == 0){
+      this.findZeros()
+    }
+
+
+      if(i < 0){
+        i++
+      }
+      // console.log(this.arrOfZerosij)
+      let verticalAxis = this.arrOfZerosij[i][0]
+      let horizontalAxis = this.arrOfZerosij[i][1]
+      // console.log(verticalAxis)
+      // if(this.board[verticalAxis][horizontalAxis] == 9){
+      //   i--
+      //
+      // }
+      for (var j = parseInt(this.board[verticalAxis][horizontalAxis])+1; j <= 9; j++) {
+        this.board[verticalAxis][horizontalAxis] = j.toString()
+        console.log(this.board[verticalAxis][horizontalAxis])
+        if(this.checkBoard()){
+          i++
+          // console.log(` ${j} + koordinat ${this.arrOfZerosij[i]}`)
+          // console.log(this.board)
+          return this.solve(i)
+        }
+
+
+
+
+      }
+      if(!this.checkBoard()){
+        // console.log(j + 'masuk else if' + this.arrOfZerosij[i])
+        this.board[verticalAxis][horizontalAxis] = '0'
+        i--
+        console.log(this.board)
+        console.log(i + ' mundur ke koordinat ' + this.arrOfZerosij[i])
+        return this.solve(i)
+      }
+
+      // return this.solve(i)
+
+
+      if(i >= this.arrOfZerosij.length){
+        return this.board
+      }
+    }
+
+
+
+// ==============tanpa backtracking (solved)==================
+//      for(let i = 0; i < this.area; i++){
+      // for(let j = 0;j < this.area;j++){
+      //   if(this.board[i][j] != 0){
+//           for(let x = 1;x <= 9;x++){
+//             this.board[i][j] = x.toString()
+//             if(!this.checkBoard()){
+//               this.board[i][j] = '0'
+//
+//             }
+//             else{
+//               break
+//             }
+//         }
+//
+//       }
+//
+//     }
+//    return this.board
+//   }
+//   //backtracking 2
+//
+//   //got array of arrays with x,y of all the 0s. find zero and back track to last 0 position
+//   //find the present value of previous 0 then replace i with value
+// console.log(this.board)
+// let arrPerbaikan = []
+//   for (let i = 0; i < this.board.length; i++) {
+//     for (let j = 0; j < this.board[i].length; j++) {
+//
+//       if(this.board[i][j] == 0){
+//         console.log(this.board[i][j])
+//         for(let x = 0; x < arrOfZerosij.length;x++){
+//           // if(arrOfZerosij[x][0] == i && arrOfZerosij[x][1] == j){
+//           //    arrPerbaikan.push(arrOfZerosij[x-1])
+//           //   //  break
+//           // }
+//           // console.log(arrPerbaikan)
+//
+//         }
+//         // console.log(arrPerbaikan)
+//
+//
+//       }
+//       // console.log(arrPerbaikan)
+//
+//
+//
+//   console.log(arrOfZerosij)
+//   return this.board
+// }
+// }
+// }
   checkRow(){
     for(let i = 0; i < this.area; i++){
       for(let j = 0;j < this.area;j++){
@@ -246,6 +352,7 @@ console.log(game.printBoard())
 // console.log(game.checkBoard())
 
 console.log('============SOLVE==============')
+// console.log(game.findZeros())
 
 // console.log(game.printBoard())
-console.log(game.solve())
+game.solve()
