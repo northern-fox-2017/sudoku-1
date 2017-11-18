@@ -2,10 +2,10 @@
 
 class Sudoku {
   constructor(board_string) {
-    this.SudokuBoard=[]
-    this.arrZero=[]
-    // this.random= Math.ceil(Math.random()*9)
-    this.angka='123456789'
+    this.board_string=board_string.split('');
+    this.SudokuBoard=[];
+    this.arrZero=[];
+    this.Result=[];
   }
 
   board() {
@@ -13,7 +13,7 @@ class Sudoku {
     for (let i = 0; i < 9; i++) {
       this.SudokuBoard.push([])
       for (let j = 0; j < 9; j++) {
-        this.SudokuBoard[i].push(board_string[counter])
+        this.SudokuBoard[i].push(this.board_string[counter])
         counter++
       }
     }
@@ -32,41 +32,37 @@ class Sudoku {
         }
       }
     }
-    console.log(this.arrZero)
-    return this;
+    // console.log(this.arrZero)
+    return this.arrZero;
   }
 //===============================CHECKER=========================================
   checkRow(row,tebakAngka){
-    this.findZero();
     let getRow = row[1];
     // console.log(this.arrZero);
     for(let i=0;i<9;i++){
-          if(tebakAngka!==this.SudokuBoard[i][getRow]){
+          if(tebakAngka==this.SudokuBoard[i][getRow]){
             return true
-          }else{
-            false
           }
     }
+    return false
   }
 
   checkColumn(column,tebakAngka){
-    this.findZero();
     let getCol = column[0];
     for(let i = 0; i < 9;i++){
-      if (tebakAngka!==this.SudokuBoard[getCol][i]){
+      if (tebakAngka==this.SudokuBoard[getCol][i]){
         return true;
-      }else{
-        return false;
       }
     }
+    return false
   }
 
-  checkArea(baris,tebakAngka){
-    let getCol = Math.floor(baris[1] / 3) * 3;
-    let getRow = Math.floor(baris[0] / 3) * 3;
+  checkArea(row,tebakAngka){
+    let getCol = Math.floor(row[1] / 3) * 3;
+    let getRow = Math.floor(row[0] / 3) * 3;
       for (let i = 0; i < 3; i++) {
         for (let j = 0; j < 3; j++){
-          if (this.SudokuBoard[getRow+i][getCol+j] == tebakAngka) {
+          if (tebakAngka == this.SudokuBoard[getRow+i][getCol+j] ) {
             return true;
           }
         }
@@ -75,16 +71,59 @@ class Sudoku {
   }
 //=============================END OF CHECKER===================================
 
+//=============================SOLVER===========================================
 
+ solve() {
+  this.findZero();
+  // console.log(arrZero)
+  for (let i = 0; i < this.arrZero.length; i++) {
+    let tebakAngka = 1;
+    let set = true;
+    for (let j = 0; j <9; j++) {
+      if (this.checkRow(this.arrZero[i], tebakAngka) == false) {
+      if (this.checkColumn(this.arrZero[i], tebakAngka) == false){
+      if (this.checkArea(this.arrZero[i], tebakAngka) == false) {
+            this.SudokuBoard[this.arrZero[i][0]][this.arrZero[i][1]] = String(tebakAngka);
+            // console.log(tebakAngka);
+            set = false;
+            }
+          }
+        }
+        tebakAngka++;
+      }
+    }
+    return this.SudokuBoard;
+  }
 
+//===============================RESULT BOARD===================================
+resultBoard() {
+  this.solve();
+  let rowBoard = this.SudokuBoard.length;
+  let colBoard = this.SudokuBoard[0].length/3;
 
-
-
-
-
-
+  for (let i = 0; i < rowBoard; i++){
+    this.Result.push([]);
+    // console.log(this.Result)
+    for (let j = 0; j < colBoard; j++){
+      this.Result[i].push([]);
+      for (let k = j*3; k < 3*(j+1);k++){
+        this.Result[i][j].push(this.SudokuBoard[i][k])
+      }
+    }
+  }
+  return this.Result
+}
 
 }
+
+
+
+
+
+
+
+
+
 
 // The file has newlines at the end of each line,
 // so we call split to remove it (\n)
@@ -96,9 +135,10 @@ let board_string = fs.readFileSync('set-01_sample.unsolved.txt')
 let game = new Sudoku(board_string)
 
 // Remember: this will just fill out what it can and not "guess"
-// game.solve()
-
+// console.log(game.solve());
+console.log(game.resultBoard());
 // console.log(game.board())
 // console.log(game.findZero())
 // console.log(game.checkColumn());
-console.log(game.checkRow());
+// console.log(game.checkRow());
+// console.log(game);
