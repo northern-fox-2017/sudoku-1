@@ -34,13 +34,17 @@ class Sudoku {
   }
   //method untuk cek kotak
   checkKotak(posCol, posRow, tebakan) {
+    //console.log('masuk');
     let startRow = (Math.floor(posRow/3))*3
     let startCol = (Math.floor(posCol/3))*3
-    for (let i = startRow; i < startRow+3; i++) {
-      for (let j = startCol; j < startCol+3; j++) {
-        if(this.board[i][j] == tebakan){
-          return false
-        }
+    //console.log(startCol,startRow , startRow+2, startCol+2);
+    for (let i = startCol; i < startCol+3; i++) {
+      for (let j = startRow; j < startRow+3; j++) {
+         if(this.board[i][j] == tebakan){
+           return false
+         }
+        //console.log('maaassuuukkk');
+        //console.log(this.board[i][j]);
       }
     }
     return true
@@ -73,29 +77,25 @@ class Sudoku {
   }
   //method untuk isi 0
   asignZero(){
+
     for (let i = 0; i < this.posisinol.length; i++){
       let posCol = this.posisinol[i][0]
       let posRow = this.posisinol[i][1]
       let tebakan = +this.board[posCol][posRow]+1
+
       while (this.checkAll(posCol, posRow, tebakan) == false) {
         debugger
-        //if(tebakan == 9 && this.checkAll(posCol, posRow, tebakan == true)){
-          //this.board[posCol][posRow] = tebakan.toString()
-
-        //}else if( tebakan < 9 && this.checkAll(posCol, posRow, tebakan) == true) {
-          //this.board[posCol][posRow] = tebakan.toString()
-
-        //}else{
           tebakan++
-        //}
+        }
 
-      }
-      if (tebakan <= 9) {
-        this.board[posCol][posRow] = tebakan.toString()
-      } else {
+      if (tebakan > 9) {
+        //console.log(i);
         i-1
+      } else {
+        this.board[posCol][posRow] = tebakan.toString()
       }
     }
+    //console.log(this.board);
   }
 }
 
@@ -109,11 +109,11 @@ var board_string = fs.readFileSync('set-01_sample.unsolved.txt')
 var game = new Sudoku(board_string)
 
 // Remember: this will just fill out what it can and not "guess"
-game.solve()
+//game.solve()
 game.board()
 game.getZero()
 game.asignZero()
 //console.log(game.board())
 console.log(game.board);
 //console.log(game.posisinol);
-//console.log(game.checkAll(0,3,0));
+//console.log(game.checkKotak(0,4,1));
