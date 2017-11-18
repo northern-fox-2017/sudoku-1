@@ -17,10 +17,8 @@ class Sudoku {
     this.trackZero();
 
     // with backtrack
-    const maximumValue = 9;
+    /* const maximumValue = 9;
     for (let i = 0; i < this.zeroPosition.length;) {
-      // console.log(this.block[0]);
-      // console.log(this.zeroPosition[i]);
       const row = this.zeroPosition[i][0];
       const column = this.zeroPosition[i][1];
       let value = Number(this.block[row][column]) + 1;
@@ -37,16 +35,14 @@ class Sudoku {
           value++;
         }
       }
-      // console.log(this.block[row][column]);
-
       if (!found) {
         this.block[row][column] = '0';
         i--;
       }
-    }
+    } */
 
     // without backtrack
-    /* for (let i = 0; i < 9; i++) {
+    for (let i = 0; i < 9; i++) {
       for (let j = 0; j < 9; j++) {
 
         if (this.block[i][j] === '0') {
@@ -58,9 +54,8 @@ class Sudoku {
           }
         }
       }
-    } */
+    }
 
-    // console.log(this.zeroPosition);
     return this.board();
   }
 
