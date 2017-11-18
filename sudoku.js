@@ -16,6 +16,27 @@ class Sudoku {
   }
 
   // Returns a string representing the current state of the board
+  show_board(){
+    console.log('-----------------------');
+    for (let i = 0; i < this.start_board.length; i++) {
+      let perBaris = []
+      for (let j = 0; j < this.start_board[i].length; j++) {
+        if (j == 0) {
+          perBaris.push('')
+        }
+        perBaris.push(this.start_board[i][j])
+        if (j == 2 || j == 5) {
+          perBaris.push('|')
+        }
+      }
+      console.log(perBaris.join(' '));
+      if (i == 2 || i == 5) {
+        console.log('-----------------------');
+      }
+    }
+    console.log('-----------------------');
+  }
+  
   board() {
     // let arr = []
     let strIndex = 0
@@ -228,12 +249,12 @@ var game = new Sudoku(board_string)
 game.board()
 game.getZero()
 console.log('AWAL');
-console.log(game.start_board);
+game.show_board()
 console.log();
 // console.log(game.empty_blocks);
 // console.log();
 console.log('SOLVED');
 game.mySolver()
-console.log(game.start_board);
+game.show_board()
 console.log();
 // console.log(game.empty_blocks);
