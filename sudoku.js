@@ -27,7 +27,27 @@ class Sudoku {
   }
 
   solve() {
-
+    for (var i = 0; i < this.wholeBoard.length; i++) {
+      for (var j = 0; j < this.wholeBoard.length; j++) {
+        if (this.wholeBoard[i][j] == 0) {
+          for (var input = 1; input <= 9; input++) {
+            console.log('MENCARI ' + input);
+            console.log(i + ' ' + j + ' = ' + this.wholeBoard[i][j]);
+            console.log(this.cekKolom(i, input));
+            console.log(this.wholeColumn[i]);
+            console.log(this.cekBaris(j, input));
+            console.log(this.wholeBoard[j]);
+            console.log(this.cekGroup(i, j, input));
+            console.log(this.box(i, j, input));
+            console.log(this.cekKolom(i, input) + this.cekBaris(j, input) + this.cekGroup(i, j, input));
+            if (!this.cekKolom(i, input) === true && !this.cekBaris(j, input) === true && !this.cekGroup(i, j, input) === true) {
+              this.wholeBoard[i][j] == input.toString()//   this.wholeBoard[i][j] = input.toString();
+            }
+          }
+        }
+      }
+    }
+    return this.display;
   }
 
   // Returns a string representing the current state of the board
@@ -39,8 +59,8 @@ class Sudoku {
         }
         this.display += this.wholeBoard[k][l];
       }
-      this.display+=' |';
-      if((k+1) % 3===0){
+      this.display += ' |';
+      if ((k + 1) % 3 === 0) {
         this.display += '\n';
       }
 
@@ -67,26 +87,28 @@ class Sudoku {
     }
   }
 
-  cekGroup(kolom, baris, input) {
-    kolom = Math.floor(kolom/3)*3;
-    baris = Math.floor(baris/3)*3;
-    var isFound = false;
-    for (var j = kolom; j < kolom+3; j++) { /* Kolom */
-      for (var k = baris; k < baris+3; k++) { /* Baris */
-        console.log(this.wholeBoard[j][k]);
-        if(this.wholeBoard[j][k] === input.toString()){
-          console.log(j + ' ' + k);
-          isFound = true; /*Ditemukan*/
-        }
+  box(kolom, baris, input) {
+    var group = [];
+    kolom = Math.floor(kolom / 3) * 3;
+    baris = Math.floor(baris / 3) * 3;
+    for (var j = kolom; j < kolom + 3; j++) { /* Kolom */
+      for (var k = baris; k < baris + 3; k++) { /* Baris */
+        // console.log(this.wholeBoard[j][k]);
+        group.push(this.wholeBoard[j][k]);
       }
     }
-    return isFound;
-    // for (var j = 6; j < 9; j++) { /* Kolom */
-    //   for (var k = 6; k < 9; k++) { /* Baris */
-    //     group.push(this.wholeBoard[j][k]);
-    //   }
-    // }
-    // return group;
+    return group;
+  }
+
+  cekGroup(kolom, baris, input) {
+    var area = this.box(kolom, baris, input);
+    var ketemu = false;
+    for (var i = 0; i < area.length; i++) {
+      if (area[i] == input) {
+        ketemu = true;
+      }
+    }
+    return ketemu;
   }
 
 }
@@ -101,21 +123,20 @@ var board_string = fs.readFileSync('set-01_sample.unsolved.txt')
 var game = new Sudoku(board_string)
 
 // Remember: this will just fill out what it can and not "guess"
-game.solve()
+// game.solve()
 
 console.log(game.board())
-console.log('BARIS');
-console.log(game.wholeBoard[0]);
-console.log(game.cekBaris(0, 5));
-console.log('\n');
-console.log('KOLOM');
-console.log(game.wholeColumn[2]);
-console.log(game.cekKolom(2, 5));
-console.log('\n');
-console.log('GROUP/REGION');
-console.log(game.cekGroup(6, 2, 2));
-
-
+// console.log('BARIS');
+// console.log(game.wholeBoard[0]);
+// console.log(game.cekBaris(0, 5));
+// console.log('\n');
+// console.log('KOLOM');
+// console.log(game.wholeColumn[2]);
+// console.log(game.cekKolom(2, 5));
+// console.log('\n');
+// console.log('GROUP/REGION');
+// // console.log(game.box(6, 3, 2));
+console.log(game.solve());
 // =================================
 // 1 | 0 | 5 | 8 | 0 | 2 | 0 | 0 | 0
 // 0 | 9 | 0 | 0 | 7 | 6 | 4 | 0 | 5
@@ -151,4 +172,8 @@ Baris 0-3
 [ '0', '0', '7', '4', '3', '0', '6', '0', '0' ]
 
 
-*/
+// for (var k = 1; k <= 9; k++) { /*Cek input pada kolom bernilai 0, jika dimasukkan angka dari 1 sampai 9*/
+//   if ((this.cekKolom(i, k) == false) && (this.cekBaris(j, k) == false) && (this.cekGroup(i, j, k) == false)){
+//     this.wholeBoard[i][j] = k.toString();
+//   }
+// }
