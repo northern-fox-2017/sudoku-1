@@ -11,7 +11,27 @@ class Sudoku {
   solve() {
     // cari zero location baris dan kolom
     // bikin dulu method untuk mencari lokasi yang kosong
+    var kordinat = this.checkZero();
+    // console.log(kordinat);
 
+    for(let i=0; i<kordinat.length; i++) {  //looping sebanyak checkZero
+      var kordinatKosong = kordinat[i];  //kordinat lokasi [x,y]
+      for(let angka=0; angka < 9; angka++) {  // looping angka 1 < 9
+
+        // check angka ada di baris dan kolom tersebut
+        // jika true kita assign angka ke dalam          ERROR disini
+        if(this.checkHorizontal(kordinatKosong[0], angka) == true && this.checkVertical(kordinatKosong[1], angka) == true && this.checkArea(kordinatKosong[0], kordinatKosong[1], angka) == true) {
+          //asign angka di kordinat kosong
+          this.arr[kordinatKosong[0]][kordinatKosong[1]] = angka.toString();
+          break;
+
+        } else {
+          this.arr[kordinatKosong[0]][kordinatKosong[1]] = Math.ceil(Math.random() *9).toString();
+        }
+      }
+    }
+    console.log('==================================================');
+    return this.arr
   }
 
 
@@ -131,4 +151,6 @@ console.log(game.board())
 
 // test case check lokasi kosong di baris dan kolom
 // outputnya kordinat yang kosong [baris, kolom] = [x,y]
-console.log(game.checkZero());
+// console.log(game.checkZero());
+
+console.log(game.solve());
