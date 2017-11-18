@@ -6,7 +6,6 @@ class Sudoku {
     this.wholeBoard = [];
     this.wholeColumn = [];
     this.display = '';
-    this.region = [];
 
     for (var i = 0; i < 9; i++) { /* Untuk input baris kedalam board */
       var awal = i * 9;
@@ -33,11 +32,21 @@ class Sudoku {
 
   // Returns a string representing the current state of the board
   board() {
-    this.display += ('=================================\n');
     for (var k = 0; k < this.wholeBoard.length; k++) {
-      this.display += (this.wholeBoard[k].join(' | ') + '\n');
+      for (var l = 0; l < this.wholeBoard.length; l++) {
+        if (l % 3 === 0) {
+          this.display += ' | ';
+        }
+        this.display += this.wholeBoard[k][l];
+      }
+      this.display+=' |';
+      if((k+1) % 3===0){
+        this.display += '\n';
+      }
+
+      this.display += '\n';
+      // this.display += (this.wholeBoard[k].join(' ') + '\n');
     }
-    this.display += ('=================================\n');
     return this.display;
   }
 
@@ -59,15 +68,14 @@ class Sudoku {
     }
   }
 
-  cekGroup(input) {
-    for (var i = 0; i < this.wholeBoard.length; i++) {
-      this.region.push([]);
-      for (var j = 0; j < 3; j++) { /* Baris */
-        for (var k = 0; k < 3; k++) { /* Kolom */
-          this.region[i].push(this.wholeBoard[j][k]);
-        }
+  cekGroup(num, input) {
+    var group = [];
+    for (var j = 6; j < 9; j++) { /* Kolom */
+      for (var k = 0; k < 3; k++) { /* Baris */
+        group.push(this.wholeBoard[j][k]);
       }
     }
+    return group;
   }
 
 }
@@ -94,5 +102,42 @@ console.log(game.wholeColumn[2]);
 console.log(game.cekKolom(2, 5));
 console.log('\n');
 console.log('GROUP/REGION');
-console.log(game.cekGroup());
-console.log(game.region);
+console.log(game.cekGroup(9, 2));
+
+
+// =================================
+// 1 | 0 | 5 | 8 | 0 | 2 | 0 | 0 | 0
+// 0 | 9 | 0 | 0 | 7 | 6 | 4 | 0 | 5
+// 2 | 0 | 0 | 4 | 0 | 0 | 8 | 1 | 9
+// 0 | 1 | 9 | 0 | 0 | 7 | 3 | 0 | 6
+// 7 | 6 | 2 | 0 | 8 | 3 | 0 | 9 | 0
+// 0 | 0 | 0 | 0 | 6 | 1 | 0 | 5 | 0
+// 0 | 0 | 7 | 6 | 0 | 0 | 0 | 3 | 0
+// 4 | 3 | 0 | 0 | 2 | 0 | 5 | 0 | 1
+// 6 | 0 | 0 | 3 | 0 | 8 | 9 | 0 | 0
+// =================================
+
+/*
+cekGroup(num, input) {
+  var group = [];
+  for (var j = 6; j < 9; j++) {
+    for (var k = 0; k < 3; k++) {
+      group.push(this.wholeBoard[j][k]);
+    }
+  }
+  return group;
+}
+Kolom 0-3
+Baris 0-3
+[ '1', '0', '5', '0', '9', '0', '2', '0', '0' ]
+
+Kolom 3-6
+Baris 0-3
+[ '0', '1', '9', '7', '6', '2', '0', '0', '0' ]
+
+Kolom 6-9
+Baris 0-3
+[ '0', '0', '7', '4', '3', '0', '6', '0', '0' ]
+
+
+*/
