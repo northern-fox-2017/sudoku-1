@@ -5,73 +5,104 @@ class Sudoku {
     this.board_string = board_string
     this.row = Math.sqrt(this.board_string.length)
     this.col = this.row
-    this.rowArea = Math.sqrt(this.row),
+    this.rowArea = Math.sqrt(this.row)
     this.colArea = this.rowArea
-    this.result = ''
+    this.arrBoard = []
   }
 
-  isRow(row, num) {
-    return this.board()[row].indexOf(num) > -1
+  isCheckRow(row, value) {
+    return this.arrBoard[row].indexOf(value) > -1;
   }
 
-  isCol(col, num) {
-    return this.board()[col].indexOf(num) > -1
-  }
-
-  isArea(row, col, num) {
-    let board = this.board(),
-        arr = [],
-        idx = 0
-
-    for (let i = 0; i < this.rowArea; i++) {
-      arr.push([])
-      for (let j = 0; j < this.colArea; j++) {
-        arr[i].push(Number(board[i][j]))
+  isCheckCol(col, value) {
+    for (let i = 0; i < this.arrBoard.length; i++) {
+      if (Number(this.arrBoard[i][col]) === value) {
+        return true;
       }
     }
-    console.log(arr);
+    return false;
+  }
+
+  isCheckArea(row, col, value) {
+    let rowScope = 0, colScope = 0;
+
+    while (row >= rowScope + this.rowArea) {
+      rowScope += this.rowArea;
+    }
+
+    while (col >= colScope + this.colArea) {
+      colScope += this.colArea;
+    }
+
+    for (let i = rowScope; i < rowScope + this.rowArea; i++) {
+      for (let j = colScope; j < colScope + this.colArea; j++) {
+        if (Number(this.arrBoard[i][j]) === value) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  isAvailableValue(row, col, value) {
+    return (this.isCheckRow(row, value) || this.isCheckCol(col, value) || this.isCheckArea(row, col, value))
+  }
+
+  emptyPositions() {
+    let newBoard = this.board(),
+        arr = [];
+
+    for (let i = 0; i < newBoard.length; i++) {
+      for (let j = 0; j < newBoard[i].length; j++) {
+        if (Number(newBoard[i][j]) === 0) {
+          arr.push([i, j]);
+        }
+      }
+    }
     return arr;
-    // console.log(this.board()[col].indexOf(num) > -1);
-    // return arr.indexOf(num) > -1
   }
 
   solve() {
-    // 105802000  090076405 200400819 019007306762083090000061050007600030430020501600308900
-    let arr = [], idx = 0
+    let arrBoardEmpty = this.emptyPositions(),
+        rowEmpty, colEmpty, value, isFound;
 
-    // this.isRow(0, 9) // false
-    // this.isCol(0, 2) // true
-    this.isArea(0, 0, 9)
+    this.board();
+    for (let k = 0; k < arrBoardEmpty.length;) {
+      rowEmpty = arrBoardEmpty[k][0];
+      colEmpty = arrBoardEmpty[k][1];
+      value = this.arrBoard[rowEmpty][colEmpty] + 1;
+      isFound = false;
 
-    for (let i = 0; i < this.row; i++) {
-      arr.push([])
-      for (let j = 0; j < this.col; j++) {
-        if (Number(this.board_string[idx]) == 0) {
-          // Looping sebanyak 9
-          //   - cek angka apakah sudah ada (panggil method isRow) di barisnya (i)
-          //   - kalo angka dibarisnya tidak ada, cek angka apakah sudah ada (panggil method isCol) di kolomnya (j)
-          //   - kalo angka dikolomnya tidak ada, cek angka apakah sudah ada (panggil method isArea) di areanya (j)
-          //   - kalo angka diareanya tidak ada maka tambahkan dalam array (arr[i].push(angka))
-          arr[i].push(99) // sementara input angka sembarang
+      while (!isFound && value <= this.row) {
+        if (!this.isAvailableValue(rowEmpty, colEmpty, value)) {
+          isFound = true;
+          this.arrBoard[rowEmpty][colEmpty] = value;
+          k++;
         } else {
-          arr[i].push(Number(this.board_string[idx]))
+          value++;
         }
-        idx++
+      }
+
+      if (!isFound) {
+        this.arrBoard[rowEmpty][colEmpty] = 0;
+        k--;
       }
     }
-    console.log(arr);
+    console.log(this.arrBoard);
   }
 
   // Returns a string representing the current state of the board
   board() {
-    let arr = [], idx = 0
+    let idx = 0;
+
+    this.arrBoard = [];
     for (let i = 0; i < this.row; i++) {
-      arr.push([])
+      this.arrBoard.push([]);
       for (let j = 0; j < this.col; j++) {
-        arr[i].push(Number(this.board_string[idx++]))
+        this.arrBoard[i].push(Number(this.board_string[idx++]));
       }
     }
-    return arr;
+    return this.arrBoard;
   }
 }
 
@@ -82,9 +113,11 @@ var board_string = fs.readFileSync('set-01_sample.unsolved.txt')
   .toString()
   .split("\n")[0]
 
-var game = new Sudoku(board_string)
+let time = new Date()
+var game = new Sudoku(board_string);
 
 // Remember: this will just fill out what it can and not "guess"
-game.solve()
-
-console.log(game.board())
+console.log(game.board());
+console.log(`SUDOKU BOARD (start time: \x1b[33m${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}:${time.getMilliseconds()}\x1b[0m)\n`);
+game.solve();
+console.log(`SUDOKU SOLVED (end time: \x1b[32m${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}:${time.getMilliseconds()}\x1b[0m)`);
