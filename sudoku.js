@@ -28,10 +28,10 @@ class Sudoku {
           this.puzzle[iMap.i] = newCandidate
           break // maju
         } else {
-          this.puzzle[iMap.i] = 0 // sebelum mundur reset current with 0
           if (newCandidate > 9) {
-            i -= 2
-            break // mundur
+            this.puzzle[iMap.i] = 0 // sebelum mundur reset current with 0
+            i -= 2 // mundur
+            break 
           }
         }
       }
