@@ -26,6 +26,7 @@ class Sudoku {
 
         }
       }
+      console.log(this.arrOfZerosij.length + " ini zeroes length ===========")
       return this.arrOfZerosij;
     }
 
@@ -37,11 +38,17 @@ class Sudoku {
       this.findZeros()
     }
 
+    if(i == this.arrOfZerosij.length){
+      return this.board
 
-      if(i < 0){
-        i++
-      }
+    }
+
+
+
+
       // console.log(this.arrOfZerosij)
+
+      // console.log(i + ' ini i nya ==========')
       let verticalAxis = this.arrOfZerosij[i][0]
       let horizontalAxis = this.arrOfZerosij[i][1]
       // console.log(verticalAxis)
@@ -51,11 +58,11 @@ class Sudoku {
       // }
       for (var j = parseInt(this.board[verticalAxis][horizontalAxis])+1; j <= 9; j++) {
         this.board[verticalAxis][horizontalAxis] = j.toString()
-        console.log(this.board[verticalAxis][horizontalAxis])
+        // console.log(this.board[verticalAxis][horizontalAxis])
         if(this.checkBoard()){
           i++
-          // console.log(` ${j} + koordinat ${this.arrOfZerosij[i]}`)
-          // console.log(this.board)
+          console.log(` ${j} + koordinat ${this.arrOfZerosij[i]}`)
+          console.log(this.board)
           return this.solve(i)
         }
 
@@ -63,22 +70,20 @@ class Sudoku {
 
 
       }
-      if(!this.checkBoard()){
+
         // console.log(j + 'masuk else if' + this.arrOfZerosij[i])
         this.board[verticalAxis][horizontalAxis] = '0'
         i--
         console.log(this.board)
         console.log(i + ' mundur ke koordinat ' + this.arrOfZerosij[i])
         return this.solve(i)
-      }
+
 
       // return this.solve(i)
 
 
-      if(i >= this.arrOfZerosij.length){
-        return this.board
-      }
     }
+
 
 
 
