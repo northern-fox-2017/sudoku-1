@@ -5,11 +5,49 @@ class Sudoku {
     this.number     = board_string
     this.papan      = [];
     this.koordinat  = [];
+    this.newPapan   = [];
+    this.kamus      = [1, 2, 3, 4, 5, 6, 7, 8, 9]
   }
 
-  solve() {
-
+  solve() {// /
+    for(let i = 0 ; i < this.papan.length ; i++) { // 9
+      for(let j = 0 ; j < this.papan[i].length ; j++) { // 9
+        if(this.papan[i][j] == 0) {
+          for(let k = 0 ; k < this.kamus.length ; k++) {
+            if(this.kuadran(i,j,this.kamus[k]) === true) {
+              if(this.horizontal(i,this.kamus[k]) === true) {
+                if(this.vertical(j,this.kamus[k]) === true) {
+                  this.papan[i][j] = this.kamus[k].toString();
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    console.log(this.papan);
   }
+
+  backTrack() {
+    let koordinat = this.getZero();
+      for(let i = 0 ; i < this.papan.length ; i++) {
+        for(let j = 0 ; j < this.papan[i].length ; j++) {
+          if(this.papan[koordinat] == 0) {
+            koordinat[i] = koordinat[i -1]
+            for(let k = 0 ; k < this.kamus.length ; k++) {
+              if(this.kuadran(i,j,this.kamus[k]) === true) {
+                if(this.horizontal(i,this.kamus[k]) === true) {
+                  if(this.vertical(j,this.kamus[k]) === true) {
+                    this.papan[i][j] = this.kamus[k].toString();
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+  }
+
 
   board() {
     let str = 0
@@ -23,10 +61,10 @@ class Sudoku {
     console.log(this.papan);
   }
 
-  getZero() { // fungsi untuk menentukan koordinat baris dan kolom
+  getZero(posisi) { // fungsi untuk menentukan koordinat baris dan kolom
     for(let i = 0 ; i < this.papan.length ; i++) {
       for(let j = 0 ; j < this.papan[i].length ; j++) {
-        if(this.papan[i][j] === '0') {
+        if(this.papan[i][j] == 0) {
           this.koordinat.push([i,j]);
         }
       }
@@ -65,11 +103,11 @@ class Sudoku {
     }
 
     if(kolom < 3) {
-        awalKolom = 0;
+        awalKolom = 0; // start kolom dari 0
     } else if(kolom < 6) {
-        awalKolom = 3;
+        awalKolom = 3; // start kolom dari 3
     } else if(kolom < 9) {
-        awalKolom = 6;
+        awalKolom = 6; // start kolom dari 6
     }
 
     for(let i = awalBaris ; i < 3 ; i++) {
@@ -83,22 +121,18 @@ class Sudoku {
   }
 }
 
-
-// The file has newlines at the end of each line,
-// so we call split to remove it (\n)
 var fs = require('fs')
 var board_string = fs.readFileSync('set-01_sample.unsolved.txt')
   .toString()
   .split("\n")[0]
 
 var game = new Sudoku(board_string)
-
+console.log('Sudoku Awal');
 game.board();
-console.log(game.horizontal(2,3));
-console.log(game.vertical(1,3))
-console.log(game.kuadran(0,4,5));
-// console.log(game.getZero());
-// Remember: this will just fill out what it can and not "guess"
-// game.solve()
-
-// console.log(game.board())
+console.log('==================================================');
+console.log(game.getZero());
+console.log('Sudoku Solve');
+game.solve();
+console.log('==================================================');
+console.log('Sudoku BackTrack');
+game.backTrack()
